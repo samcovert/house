@@ -89,4 +89,9 @@ router.get(
     }
   );
 
+    // Get the current user
+router.get('/', (req, res) => {
+
+})
+
 module.exports = router;
