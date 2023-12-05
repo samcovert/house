@@ -10,17 +10,9 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
    options.tableName = 'Spots';
-   await Spot.bulkCreate(options, [
+   await Spot.bulkCreate(//options,
+   [
     {
       ownerId: 1,
       address: '123 north st',
@@ -31,7 +23,9 @@ module.exports = {
       lng: '112.0704',
       name: 'phx house',
       description: 'great house',
-      price: '300'
+      price: '300',
+      avgRating: 4,
+      previewImage: 'house.jpeg'
     },
     {
       ownerId: 2,
@@ -43,7 +37,9 @@ module.exports = {
       lng: '108.0704',
       name: 'abq house',
       description: 'big house',
-      price: '500'
+      price: '500',
+      avgRating: 5,
+      previewImage: 'bighouse.jpeg'
     },
     {
       ownerId: 3,
@@ -55,7 +51,9 @@ module.exports = {
       lng: '111.0704',
       name: 'that one house',
       description: 'small house',
-      price: '100'
+      price: '100',
+      avgRating: 3,
+      previewImage: 'smallhouse.jpeg'
     },
    ], { validate: true })
 

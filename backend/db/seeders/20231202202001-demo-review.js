@@ -20,7 +20,8 @@ module.exports = {
      * }], {});
     */
     options.tableName = 'Reviews';
-    await Review.bulkCreate(options, [
+    await Review.bulkCreate(//options,
+    [
       {
         spotId: 1,
         userId: 1,
