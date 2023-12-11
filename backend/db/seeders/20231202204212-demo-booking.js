@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = 'Bookings';
-    await Booking.bulkCreate(//options,
+    await Booking.bulkCreate(options,
     [
       {
         spotId: 1,
