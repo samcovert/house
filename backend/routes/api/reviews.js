@@ -23,7 +23,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
             }
         ]
     })
-    res.json({ reviews })
+    return res.json({ reviews })
 })
 
 // Add an image to a review based on the reviews id
@@ -51,7 +51,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
             reviewId: reviewId,
             url: url
         })
-        res.json(newImage)
+        return res.json(newImage)
     }
 })
 
@@ -72,7 +72,7 @@ router.put('/:reviewId', requireAuth, async (req, res, next) => {
                 stars: stars
             })
             await findReview.save()
-            res.json(findReview)
+            return res.json(findReview)
         }
     } catch(err) {
         console.error(err)
@@ -91,7 +91,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
         next(err)
     } else {
         await deleteReview.destroy()
-        res.json({
+        return res.json({
             "message": "Successfully deleted"
         })
     }

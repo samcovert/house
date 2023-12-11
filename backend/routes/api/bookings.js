@@ -16,7 +16,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
             model: Spot
         }
     })
-    res.json(booking)
+    return res.json(booking)
 })
 
 // Delete a booking
@@ -35,7 +35,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
         next(err)
     } else {
         await booking.destroy()
-        res.json({
+        return res.json({
             message: "Successfully deleted"
         })
     }
@@ -47,8 +47,6 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     const userId = req.user.id
     const { startDate, endDate } = req.body
     const today = new Date()
-
-
 
     try{
         const booking = await Booking.findByPk(`${bookingId}`)

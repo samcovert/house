@@ -27,7 +27,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     const spot = await Spot.findAll({
         where: { ownerId: userId }
     })
-    res.json(spot)
+    return res.json(spot)
 })
 
 
@@ -39,7 +39,7 @@ router.get('/:spotId', requireAuth, async (req, res, next) => {
         where: { id: `${id}` },
         include: SpotImage
     });
-        res.json({ spot })
+        return res.json({ spot })
 } catch {
     res.status(404).json({
         message: "Spot couldn't be found"
@@ -65,7 +65,7 @@ router.post('/', requireAuth, async (req, res, next) => {
         description: description,
         price: price
     })
-    res.json(newSpot)
+    return res.status(201).json(newSpot)
     } catch(err) {
             console.error(err)
             next(err)
@@ -88,7 +88,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             url,
             preview
         })
-        res.json(newImage)
+        return res.json(newImage)
     }
 })
 
@@ -114,7 +114,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
                 description: description
             })
             await spot.save()
-            res.json(spot)
+            return res.json(spot)
         }
     } catch(err) {
         console.error(err)
@@ -133,7 +133,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
         next(err)
     } else {
         await spot.destroy()
-        res.json({
+        return res.json({
             "message": "Successfully deleted"
         })
     }
@@ -162,7 +162,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
                 }
             ]
         })
-        res.json(reviews)
+        return res.json(reviews)
     }
 })
 
@@ -196,7 +196,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
                 review: review,
                 stars:stars
             })
-            res.json(newReview)
+            return res.status(201).json(newReview)
         }
     } catch(err) {
         console.error(err)
