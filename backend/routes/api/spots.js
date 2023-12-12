@@ -35,16 +35,18 @@ router.get('/current', requireAuth, async (req, res, next) => {
 router.get('/:spotId', requireAuth, async (req, res, next) => {
     const id = req.params.spotId;
 
-   try{ const spot = await Spot.findAll({
+   const spot = await Spot.findAll({
         where: { id: `${id}` },
         include: SpotImage
     });
-        return res.json({ spot })
-} catch {
-    res.status(404).json({
-        message: "Spot couldn't be found"
-    })
-}
+        if (!spot) {
+            res.status(404).json({
+                message: "Spot couldn't be found"
+            })
+        } else {
+            return res.json({ spot })
+        }
+
 })
 
 // Create a spot
