@@ -41,7 +41,20 @@ router.get('/:spotId', requireAuth, async (req, res, next) => {
                 message: "Spot couldn't be found"
             })
         } else {
-            return res.json(spot)
+            const spotDetails = await Spot.findAll({
+                where: {id: id},
+                include: [
+                    {
+                        model: SpotImage,
+                        attributes: ['id', 'url', 'preview']
+                    },
+                    {
+                        model: User,
+                        attributes: ['id', 'firstName', 'lastName']
+                    }
+                ]
+            })
+            return res.json(spotDetails)
         }
 })
 
