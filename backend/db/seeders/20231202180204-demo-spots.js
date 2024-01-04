@@ -23,9 +23,7 @@ module.exports = {
       lng: '112.0704',
       name: 'phx house',
       description: 'great house',
-      price: '300',
-      avgRating: 4,
-      previewImage: 'house.jpeg'
+      price: '300'
     },
     {
       ownerId: 2,
@@ -37,9 +35,7 @@ module.exports = {
       lng: '108.0704',
       name: 'abq house',
       description: 'big house',
-      price: '500',
-      avgRating: 5,
-      previewImage: 'bighouse.jpeg'
+      price: '500'
     },
     {
       ownerId: 3,
@@ -51,9 +47,7 @@ module.exports = {
       lng: '111.0704',
       name: 'that one house',
       description: 'small house',
-      price: '100',
-      avgRating: 3,
-      previewImage: 'smallhouse.jpeg'
+      price: '100'
     },
    ], { validate: true })
 
