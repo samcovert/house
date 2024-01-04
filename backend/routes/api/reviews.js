@@ -66,6 +66,16 @@ router.put('/:reviewId', requireAuth, async (req, res, next) => {
             const err = new Error("Review couldn't be found")
             err.status = 404
             next(err)
+        } else if (review.length === 0) {
+            res.status(400).json({
+                "message": "Bad Request",
+                "errors": "Review text is required"
+            })
+        } else if (isNaN(stars) || stars < 0 || stars > 5) {
+            res.status(400).json({
+                "message": "Bad Request",
+                "errors": "Stars must be an integer from 1 to 5"
+            })
         } else {
             findReview.set({
                 review: review,
