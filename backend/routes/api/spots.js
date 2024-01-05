@@ -2,18 +2,53 @@ const express = require('express');
 const { Spot, SpotImage, User, Review, ReviewImage, Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const router = express.Router();
-const { Op } = require("sequelize")
+const { Op } = require("sequelize");
+const spot = require('../../db/models/spot');
 
 
 // Get all spots
 router.get('/', requireAuth, async (req, res, next) => {
     try {
         const spots = await Spot.findAll({
-            attributes: [
-                'id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', 'avgRating', 'previewImage'
+            include: [
+                { model : Review },
+                { model: SpotImage }
             ]
         })
-        res.json({spots})
+        // console.log(spots)
+        let spotList = []
+        spots.forEach(spot => {
+            spotList.push(spot.toJSON())
+        })
+        // console.log(spotList)
+        spotList.forEach(spot => {
+            spot.SpotImages.forEach(img => {
+                // console.log(img.previewImage)
+                if (img.previewImage === true) {
+                    spot.previewImage = img.url
+                }
+            })
+            if (!spot.previewImage) {
+                spot.previewImage = 'No preview image found'
+            }
+            // delete spot.Reviews
+            delete spot.SpotImages
+        })
+        spotList.forEach(spot => {
+            let avg = 0
+            spot.Reviews.forEach(review => {
+                avg += review.stars
+                avg = avg / spot.Reviews.length
+                spot.avgRating = avg
+            })
+            if (!spot.avgRating) {
+                spot.avgRating = 'No avgRating found'
+            }
+            delete spot.Reviews
+        })
+        res.json({
+            "Spots": spotList
+        })
     } catch(err) {
         console.error(err)
         next(err)
