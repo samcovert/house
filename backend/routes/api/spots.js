@@ -60,9 +60,45 @@ router.get('/current', requireAuth, async (req, res, next) => {
     const userId = req.user.id;
 
     const spot = await Spot.findAll({
-        where: { ownerId: userId }
+        where: { ownerId: userId },
+        include: [
+            { model : Review },
+            { model: SpotImage }
+        ]
     })
-    return res.json(spot)
+    let spotList = []
+        spots.forEach(spot => {
+            spotList.push(spot.toJSON())
+        })
+        // console.log(spotList)
+        spotList.forEach(spot => {
+            spot.SpotImages.forEach(img => {
+                // console.log(img.previewImage)
+                if (img.previewImage === true) {
+                    spot.previewImage = img.url
+                }
+            })
+            if (!spot.previewImage) {
+                spot.previewImage = 'No preview image found'
+            }
+            // delete spot.Reviews
+            delete spot.SpotImages
+        })
+        spotList.forEach(spot => {
+            let avg = 0
+            spot.Reviews.forEach(review => {
+                avg += review.stars
+                avg = avg / spot.Reviews.length
+                spot.avgRating = avg
+            })
+            if (!spot.avgRating) {
+                spot.avgRating = 'No avgRating found'
+            }
+            delete spot.Reviews
+        })
+        res.json({
+            "Spots": spotList
+        })
 })
 
 
