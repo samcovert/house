@@ -135,6 +135,12 @@ router.post('/', requireAuth, async (req, res, next) => {
     const userId = req.user.id;
 
     try{
+        if (!address) {
+            return res.status(400).json({
+                "message": "Bad Request",
+                "errors": "Street address is required"
+            })
+        }
     const newSpot = Spot.build({
         ownerId: userId,
         address: address,
