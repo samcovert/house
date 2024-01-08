@@ -106,27 +106,39 @@ router.get('/current', requireAuth, async (req, res, next) => {
 router.get('/:spotId', requireAuth, async (req, res, next) => {
     const id = req.params.spotId;
 
-   const spot = await Spot.findByPk(`${id}`);
+   const spot = await Spot.findByPk(id, {
+    include: [
+        {
+            model: SpotImage,
+            attributes: ['id', 'url', 'preview']
+        },
+        {
+            model: User,
+            attributes: ['id', 'firstName', 'lastName']
+        }
+    ]
+   });
         if (!spot) {
             res.status(404).json({
                 message: "Spot couldn't be found"
             })
-        } else {
-            const spotDetails = await Spot.findAll({
-                where: {id: id},
-                include: [
-                    {
-                        model: SpotImage,
-                        attributes: ['id', 'url', 'preview']
-                    },
-                    {
-                        model: User,
-                        attributes: ['id', 'firstName', 'lastName']
-                    }
-                ]
-            })
-            return res.json(spotDetails)
         }
+        // } else {
+        //     const spotDetails = await Spot.findAll({
+        //         where: {id: id},
+        //         include: [
+        //             {
+        //                 model: SpotImage,
+        //                 attributes: ['id', 'url', 'preview']
+        //             },
+        //             {
+        //                 model: User,
+        //                 attributes: ['id', 'firstName', 'lastName']
+        //             }
+        //         ]
+        //     })
+            return res.json(spot)
+
 })
 
 // Create a spot
@@ -135,47 +147,23 @@ router.post('/', requireAuth, async (req, res, next) => {
     const userId = req.user.id;
 
     try{
-        if (!address) {
+        if (!address || !city || !state || !country || lat < -90 || lat > 90 || lng < -180 || lng > 180 || !description || price < 0) {
             return res.status(400).json({
                 "message": "Bad Request",
-                "errors": "Street address is required"
+                "errors": {
+                    "address": "Street address is required",
+                    "city": "City is required",
+                    "state": "State is required",
+                    "country": "Country is required",
+                    "lat": "Latitude must be within -90 and 90",
+                    "lng": "Longitude must be within -180 and 180",
+                    "name": "Name must be less than 50 characters",
+                    "description": "Description is required",
+                    "price": "Price per day must be a positive number"
+                  }
             })
-        } else if (!city) {
-            return res.status(400).json({
-                "message": "Bad Request",
-                "errors": "City is required"
-            })
-        } else if (!state) {
-            return res.status(400).json({
-                "message": "Bad Request",
-                "errors": "State is required"
-            })
-        } else if (!country) {
-            return res.status(400).json({
-                "message": "Bad Request",
-                "errors": "County is required"
-            })
-        } else if (lat < -90 || lat > 90) {
-            return res.status(400).json({
-                "message": "Bad Request",
-                "errors": "Latitude must be within -90 and 90"
-            })
-        } else if (lng < -180 || lng > 180) {
-            return res.status(400).json({
-                "message": "Bad Request",
-                "errors": "Longitude must be within -180 and 180"
-            })
-        } else if (!description) {
-            return res.status(400).json({
-                "message": "Bad Request",
-                "errors": "Description is required"
-            })
-        } else if (price < 0) {
-            return res.status(400).json({
-                "message": "Bad Request",
-                "errors": "Price must be a positive number"
-            })
-        } else {
+        }
+         else {
             const newSpot = Spot.build({
                 ownerId: userId,
                 address: address,
@@ -209,6 +197,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         next(err)
     } else {
         const newImage = await SpotImage.create({
+            spotId,
             url,
             preview
         })
@@ -226,6 +215,21 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
             const err = new Error("Spot couldn't be found")
             err.status = 404
             next(err)
+        } else if (!address || !city || !state || !country || lat < -90 || lat > 90 || lng < -180 || lng > 180 || !description || price < 0) {
+            return res.status(400).json({
+                "message": "Bad Request",
+                "errors": {
+                    "address": "Street address is required",
+                    "city": "City is required",
+                    "state": "State is required",
+                    "country": "Country is required",
+                    "lat": "Latitude must be within -90 and 90",
+                    "lng": "Longitude must be within -180 and 180",
+                    "name": "Name must be less than 50 characters",
+                    "description": "Description is required",
+                    "price": "Price per day must be a positive number"
+                  }
+            })
         } else {
             spot.set({
                 address: address,

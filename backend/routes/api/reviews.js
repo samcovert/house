@@ -16,10 +16,12 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 attributes: ['id', 'firstName', 'lastName']
             },
             {
-                model: Spot
+                model: Spot,
+                attributes: ['id', 'ownerId', 'address', 'lat', 'lng', 'name', 'price']
             },
             {
-                model: ReviewImage
+                model: ReviewImage,
+                attributes: ['id', 'url']
             }
         ]
     })
