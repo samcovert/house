@@ -59,7 +59,7 @@ router.get('/', requireAuth, async (req, res, next) => {
 router.get('/current', requireAuth, async (req, res, next) => {
     const userId = req.user.id;
 
-    const spot = await Spot.findAll({
+    const spots = await Spot.findAll({
         where: { ownerId: userId },
         include: [
             { model : Review },
@@ -140,21 +140,57 @@ router.post('/', requireAuth, async (req, res, next) => {
                 "message": "Bad Request",
                 "errors": "Street address is required"
             })
+        } else if (!city) {
+            return res.status(400).json({
+                "message": "Bad Request",
+                "errors": "City is required"
+            })
+        } else if (!state) {
+            return res.status(400).json({
+                "message": "Bad Request",
+                "errors": "State is required"
+            })
+        } else if (!country) {
+            return res.status(400).json({
+                "message": "Bad Request",
+                "errors": "County is required"
+            })
+        } else if (lat < -90 || lat > 90) {
+            return res.status(400).json({
+                "message": "Bad Request",
+                "errors": "Latitude must be within -90 and 90"
+            })
+        } else if (lng < -180 || lng > 180) {
+            return res.status(400).json({
+                "message": "Bad Request",
+                "errors": "Longitude must be within -180 and 180"
+            })
+        } else if (!description) {
+            return res.status(400).json({
+                "message": "Bad Request",
+                "errors": "Description is required"
+            })
+        } else if (price < 0) {
+            return res.status(400).json({
+                "message": "Bad Request",
+                "errors": "Price must be a positive number"
+            })
+        } else {
+            const newSpot = Spot.build({
+                ownerId: userId,
+                address: address,
+                city: city,
+                state: state,
+                country: country,
+                lat: lat,
+                lng: lng,
+                name: name,
+                description: description,
+                price: price
+            })
+            await newSpot.save();
+            return res.status(201).json(newSpot)
         }
-    const newSpot = Spot.build({
-        ownerId: userId,
-        address: address,
-        city: city,
-        state: state,
-        country: country,
-        lat: lat,
-        lng: lng,
-        name: name,
-        description: description,
-        price: price
-    })
-    await newSpot.save();
-    return res.status(201).json(newSpot)
     } catch(err) {
             console.error(err)
             next(err)
