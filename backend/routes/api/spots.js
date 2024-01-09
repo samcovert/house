@@ -3,7 +3,7 @@ const { Spot, SpotImage, User, Review, ReviewImage, Booking } = require('../../d
 const { requireAuth } = require('../../utils/auth');
 const router = express.Router();
 const { Op } = require("sequelize");
-const { handleValidationErrors, validateSpot } = require('../../utils/validation');
+const { handleValidationErrors, validateSpot, validateReviews } = require('../../utils/validation');
 
 
 
@@ -161,16 +161,20 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
     const spot = await Spot.findByPk(`${spotId}`);
     if (!spot) {
-        const err = new Error("Spot couldn't be found")
-        err.status = 404;
-        next(err)
+        return res.status(404).json({
+            "message": "Spot couldn't be found"
+        })
     } else {
-        const newImage = await SpotImage.create({
+        const newImage = SpotImage.build({
             spotId,
             url,
             preview
         })
-        return res.json(newImage)
+        await newImage.save()
+        const image = await SpotImage.findByPk(newImage.id, {
+            attributes: ['id', 'url', 'preview']
+        })
+        return res.json(image)
     }
 })
 
@@ -181,9 +185,9 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     try {
         const spot = await Spot.findByPk(spotId)
         if (!spot) {
-            const err = new Error("Spot couldn't be found")
-            err.status = 404
-            next(err)
+            return res.status(404).json({
+                "message": "Spot couldn't be found"
+            })
         } else {
             spot.set({
                 address: address,
@@ -210,9 +214,9 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
     const spot = await Spot.findByPk(`${spotId}`)
     if (!spot) {
-        const err = new Error("Spot couldn't be found")
-        err.status = 404
-        next(err)
+        return res.status(404).json({
+            "message": "Spot couldn't be found"
+        })
     } else {
         await spot.destroy()
         return res.json({
@@ -227,9 +231,9 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 
     const spot = await Spot.findByPk(`${spotId}`);
     if (!spot) {
-        const err = new Error("Spot couldn't be found")
-        err.status = 404
-        next(err)
+        return res.status(404).json({
+            "message": "Spot couldn't be found"
+        })
     } else {
         const reviews = await Review.findAll({
             where: { spotId: spotId },
@@ -263,13 +267,13 @@ router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
             }
         })
         if (!spot) {
-            const err = new Error("Spot couldn't be found")
-            err.status = 404
-            next(err)
+            return res.status(404).json({
+                "message": "Spot couldn't be found"
+            })
         } else if (reviews.length) {
-            const err = new Error("User already has a review for this spot")
-            err.status = 500
-            next(err)
+            return res.status(500).json({
+                "message": "User already has a review for this spot"
+            })
         } else {
             const newReview = await Review.create({
                 userId: userId,
@@ -292,9 +296,9 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
     const spot = await Spot.findByPk(`${spotId}`);
     if (!spot) {
-        const err = new Error("Spot couldn't be found")
-        err.status = 404
-        next(err)
+        return res.status(404).json({
+            "message": "Spot couldn't be found"
+        })
     } else if (spot.ownerId === userId) {
         const ownerBooking = await Booking.findAll({
             where: {
@@ -325,9 +329,9 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
     const spot = await Spot.findByPk(`${spotId}`)
     if (!spot) {
-        const err = new Error("Spot couldn't be found")
-        err.status = 404
-        next(err)
+        return res.status(404).json({
+            "message": "Spot couldn't be found"
+        })
     }
     try{
         const bookings = await Booking.findAll({
