@@ -23,9 +23,10 @@ router.get('/', requireAuth, async (req, res, next) => {
         })
         // console.log(spotList)
         spotList.forEach(spot => {
+            // console.log(spot.SpotImages)
             spot.SpotImages.forEach(img => {
                 // console.log(img.previewImage)
-                if (img.previewImage === true) {
+                if (img.preview === true) {
                     spot.previewImage = img.url
                 }
             })
@@ -75,7 +76,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
         spotList.forEach(spot => {
             spot.SpotImages.forEach(img => {
                 // console.log(img.previewImage)
-                if (img.previewImage === true) {
+                if (img.preview === true) {
                     spot.previewImage = img.url
                 }
             })
@@ -125,7 +126,6 @@ router.get('/:spotId', requireAuth, async (req, res, next) => {
             })
         }
         return res.json(spot)
-
 })
 
 // Create a spot
@@ -158,11 +158,16 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const spotId = req.params.spotId;
     const { url, preview } = req.body;
+    const user = req.user.id
 
     const spot = await Spot.findByPk(`${spotId}`);
     if (!spot) {
         return res.status(404).json({
             "message": "Spot couldn't be found"
+        })
+    } else if (spot.id !== user) {
+        return res.status(403).json({
+            message: "Forbidden"
         })
     } else {
         const newImage = SpotImage.build({
@@ -182,11 +187,17 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     const spotId = req.params.spotId;
     const { address, city, state, country, lat, lng, name, description } = req.body
+    const user = req.user.id
+
     try {
         const spot = await Spot.findByPk(spotId)
         if (!spot) {
             return res.status(404).json({
                 "message": "Spot couldn't be found"
+            })
+        } else if (spot.id !== user) {
+            return res.status(403).json({
+                message: "Forbidden"
             })
         } else {
             spot.set({
@@ -211,11 +222,16 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
 // Delete a spot
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
     const spotId = req.params.spotId;
+    const user = req.user.id
 
     const spot = await Spot.findByPk(`${spotId}`)
     if (!spot) {
         return res.status(404).json({
             "message": "Spot couldn't be found"
+        })
+    } else if (spot.id !== user) {
+        return res.status(403).json({
+            message: "Forbidden"
         })
     } else {
         await spot.destroy()

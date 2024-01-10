@@ -32,12 +32,17 @@ router.get('/current', requireAuth, async (req, res, next) => {
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     const reviewId = req.params.reviewId;
     const { url } = req.body;
+    const user = req.user.id
 
     const review = await Review.findByPk(`${reviewId}`);
     if (!review) {
-        const err = new Error("Review couldn't be found")
-        err.status = 404;
-        next(err)
+        return res.status(404).json({
+            message: "Review couldn't be found"
+        })
+    } else if (review.userId !== user) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     }
     const numImages = await ReviewImage.count({
         where: {
@@ -61,13 +66,18 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 router.put('/:reviewId', requireAuth, async (req, res, next) => {
     const reviewId = req.params.reviewId;
     const { review, stars } = req.body
+    const user = req.user.id
 
     try {
         const findReview = await Review.findByPk(`${reviewId}`)
         if (!findReview) {
-            const err = new Error("Review couldn't be found")
-            err.status = 404
-            next(err)
+            return res.status(404).json({
+                message: "Review couldn't be found"
+            })
+        } else if (findReview.userId !== user) {
+            return res.status(403).json({
+                message: "Forbidden"
+            })
         } else if (review.length === 0) {
             res.status(400).json({
                 "message": "Bad Request",
@@ -95,12 +105,17 @@ router.put('/:reviewId', requireAuth, async (req, res, next) => {
 // Delete a Review
 router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     const reviewId = req.params.reviewId
+    const user = req.user.id
 
     const deleteReview = await Review.findByPk(`${reviewId}`)
     if (!deleteReview) {
-        const err = new Error("Review couldn't be found")
-        err.status = 404
-        next(err)
+        return res.status(404).json({
+            message: "Review couldn't be found"
+        })
+    } else if (deleteReview.userId !== user) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     } else {
         await deleteReview.destroy()
         return res.json({

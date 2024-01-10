@@ -6,12 +6,17 @@ const router = express.Router();
 // Delete a spot image
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
     const imageId = req.params.imageId;
+    const user = req.user.id
 
     const image = await SpotImage.findByPk(`${imageId}`)
     if (!image) {
-        const err = new Error("Spot Image couldn't be found")
-        err.status = 404
-        next(err)
+        return res.status(404).json({
+            message: "Review couldn't be found"
+        })
+    } else if (image.userId !== user) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     } else {
         await image.destroy()
         return res.json({

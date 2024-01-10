@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         models.SpotImage,
         { foreignKey: 'spotId', onDelete: 'CASCADE', hooks: true}
       )
-      Spot.belongsTo(models.User, { foreignKey: 'ownerId' })
+      Spot.belongsTo(models.User, { foreignKey: 'ownerId' }, { as: 'Owner' })
     }
   }
   Spot.init({
