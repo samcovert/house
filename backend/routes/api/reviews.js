@@ -17,7 +17,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
             },
             {
                 model: Spot,
-                attributes: ['id', 'ownerId', 'address', 'lat', 'lng', 'name', 'price']
+                attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+                include: [
+                    {
+                    model: SpotImage,
+                    attributes: ['preview', 'url']
+                    }
+                ]
             },
             {
                 model: ReviewImage,
@@ -25,7 +31,26 @@ router.get('/current', requireAuth, async (req, res, next) => {
             }
         ]
     })
-    return res.json({ reviews })
+    let reviewList = []
+    reviews.forEach(review => {
+        reviewList.push(review.toJSON())
+    })
+    reviewList.forEach(review => {
+        const image = review.Spot.SpotImages
+        image.forEach(img => {
+            // console.log(img.preview)
+            if (img.preview === true) {
+            review.Spot.previewImage = img.url
+            console.log(review)
+            } else {
+                review.Spot.previewImage = 'No preview image found'
+            }
+            delete review.Spot.SpotImages
+        })
+    })
+    return res.json({
+        Reviews: reviewList
+    })
 })
 
 // Add an image to a review based on the reviews id
