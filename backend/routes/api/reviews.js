@@ -2,7 +2,7 @@ const express = require('express');
 const { Spot, SpotImage, User, Review, ReviewImage } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const router = express.Router();
-
+const { validateReviews } = require('../../utils/validation')
 
 // Get all reviews of the current user
 router.get('/current', requireAuth, async (req, res, next) => {
@@ -92,7 +92,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 })
 
 // Edit a review
-router.put('/:reviewId', requireAuth, async (req, res, next) => {
+router.put('/:reviewId', requireAuth, validateReviews, async (req, res, next) => {
     const reviewId = req.params.reviewId;
     const { review, stars } = req.body
     const user = req.user.id
@@ -106,16 +106,6 @@ router.put('/:reviewId', requireAuth, async (req, res, next) => {
         } else if (findReview.userId !== user) {
             return res.status(403).json({
                 message: "Forbidden"
-            })
-        } else if (review.length === 0) {
-            res.status(400).json({
-                "message": "Bad Request",
-                "errors": "Review text is required"
-            })
-        } else if (isNaN(stars) || stars < 0 || stars > 5) {
-            res.status(400).json({
-                "message": "Bad Request",
-                "errors": "Stars must be an integer from 1 to 5"
             })
         } else {
             findReview.set({
