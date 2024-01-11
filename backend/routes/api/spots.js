@@ -33,7 +33,6 @@ router.get('/', requireAuth, async (req, res, next) => {
             if (!spot.previewImage) {
                 spot.previewImage = 'No preview image found'
             }
-            // delete spot.Reviews
             delete spot.SpotImages
         })
         spotList.forEach(spot => {
@@ -49,7 +48,7 @@ router.get('/', requireAuth, async (req, res, next) => {
             delete spot.Reviews
         })
         res.json({
-            "Spots": spotList
+            Spots: spotList
         })
     } catch(err) {
         console.error(err)
@@ -116,6 +115,7 @@ router.get('/:spotId', requireAuth, async (req, res, next) => {
         },
         {
             model: User,
+            as: 'Owner',
             attributes: ['id', 'firstName', 'lastName']
         }
     ]
@@ -125,6 +125,7 @@ router.get('/:spotId', requireAuth, async (req, res, next) => {
                 message: "Spot couldn't be found"
             })
         }
+
         return res.json(spot)
 })
 
@@ -165,7 +166,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         return res.status(404).json({
             "message": "Spot couldn't be found"
         })
-    } else if (spot.id !== user) {
+    } else if (spot.ownerId !== user) {
         return res.status(403).json({
             message: "Forbidden"
         })
