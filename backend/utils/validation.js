@@ -70,8 +70,19 @@ const validateReviews = [
   handleValidationErrors
 ]
 
+const validateBookings = [
+  check('startDate')
+    .isAfter(Date.now().toString())
+    .withMessage('startDate cannot be in the past'),
+  check('endDate')
+    .isAfter('startDate')
+    .withMessage('endDate cannot be on or before startDate'),
+  handleValidationErrors
+]
+
 module.exports = {
   handleValidationErrors,
   validateSpot,
-  validateReviews
+  validateReviews,
+  validateBookings
 };

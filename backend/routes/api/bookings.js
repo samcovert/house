@@ -8,15 +8,30 @@ const router = express.Router();
 router.get('/current', requireAuth, async (req, res, next) => {
     const userId = req.user.id;
 
-    const booking = await Booking.findAll({
+    const bookings = await Booking.findAll({
         where: {
             userId: userId
         },
         include: {
-            model: Spot
+            model: Spot,
+            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+            include: { model: SpotImage }
         }
     })
-    return res.json(booking)
+    let bookingList = []
+
+    bookings.forEach(booking => {
+        bookingList.push(booking.toJSON())
+    })
+    bookingList.forEach(booking => {
+        booking.Spot.SpotImages.forEach(image => {
+            booking.Spot.previewImage = image.url
+        })
+        delete booking.Spot.SpotImages
+    })
+    return res.json({
+        Bookings: bookingList
+    })
 })
 
 // Delete a booking
