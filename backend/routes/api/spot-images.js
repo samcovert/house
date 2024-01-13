@@ -12,7 +12,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     const spot = await Spot.findAll({
         where: { id: image.spotId }
     })
-    if (!image) {
+    if (!image || !spot) {
         return res.status(404).json({
             message: "Spot Image couldn't be found"
         })

@@ -12,7 +12,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     const review = await Review.findAll({
         where: { id: image.reviewId }
     })
-    if (!image) {
+    if (!image || !review) {
         return res.status(404).json({
             message: "Review Image couldn't be found"
         })
