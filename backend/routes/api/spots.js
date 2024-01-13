@@ -221,7 +221,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
             return res.status(404).json({
                 "message": "Spot couldn't be found"
             })
-        } else if (spot.id !== user) {
+        } else if (spot.ownerId !== user) {
             return res.status(403).json({
                 message: "Forbidden"
             })
@@ -255,7 +255,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
         return res.status(404).json({
             "message": "Spot couldn't be found"
         })
-    } else if (spot.id !== user) {
+    } else if (spot.ownerId !== user) {
         return res.status(403).json({
             message: "Forbidden"
         })
@@ -381,7 +381,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
         return res.status(404).json({
             "message": "Spot couldn't be found"
         })
-    } else if (spot.userId === userId) {
+    } else if (spot.ownerId === userId) {
         return res.status(403).json({
             message: "Forbidden"
         })
