@@ -3,17 +3,20 @@ const { Spot, SpotImage, User, Review, ReviewImage, Booking } = require('../../d
 const { requireAuth } = require('../../utils/auth');
 const router = express.Router();
 
-// Delete a spot image
+// Delete a review image
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
     const imageId = req.params.imageId;
     const user = req.user.id
 
-    const image = await ReviewImage.findByPk(`${imageId}`)
+    const image = await ReviewImage.findByPk(imageId)
+    const review = await Review.findOne({
+        where: { id: image.reviewId }
+    })
     if (!image) {
         return res.status(404).json({
-            message: "Review couldn't be found"
+            message: "Review Image couldn't be found"
         })
-    } else if (image.userId !== user) {
+    } else if (review.userId !== user) {
         return res.status(403).json({
             message: "Forbidden"
         })
