@@ -365,6 +365,10 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
         return res.status(404).json({
             "message": "Spot couldn't be found"
         })
+    } else if (spot.userId === userId) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     }
     try{
         const bookings = await Booking.findAll({

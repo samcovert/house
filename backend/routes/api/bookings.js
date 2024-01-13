@@ -18,8 +18,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
             include: { model: SpotImage }
         }
     })
-    let bookingList = []
 
+    let bookingList = []
     bookings.forEach(booking => {
         bookingList.push(booking.toJSON())
     })
@@ -58,21 +58,25 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
 
 // Edit a booking
 router.put('/:bookingId', requireAuth, async (req, res, next) => {
-    const bookingId = req.params.id
+    const bookingId = req.params.bookingId
     const userId = req.user.id
     const { startDate, endDate } = req.body
     const today = new Date()
-
+    console.log(new Date(startDate))
     try{
-        const booking = await Booking.findByPk(`${bookingId}`)
+        const booking = await Booking.findByPk(bookingId)
         if (!booking) {
-            const err = new Error("Booking couldn't be found")
-            err.status = 404
-            next(err)
+            return res.status(404).json({
+                message: "Booking couldn't be found"
+            })
+        } else if (booking.userId !== userId) {
+            return res.status(403).json({
+                message: "Forbidden"
+            })
         } else if (endDate <= today) {
-            const err = new Error("Past bookings can't be modified")
-            err.status = 403
-            next(err)
+            return res.status(403).json({
+                message: "Past bookings can't be modified"
+            })
         }
 
         const bookings = await Booking.findAll({
