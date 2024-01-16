@@ -43,8 +43,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    lat: DataTypes.DECIMAL,
-    lng: DataTypes.DECIMAL,
+    lat: DataTypes.FLOAT,
+    lng: DataTypes.FLOAT,
     name: {
       type: DataTypes.STRING,
       allowNull: false
@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    price: DataTypes.DECIMAL
+    price: DataTypes.FLOAT
   }, {
     sequelize,
     modelName: 'Spot',
