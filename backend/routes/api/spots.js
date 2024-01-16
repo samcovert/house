@@ -4,6 +4,7 @@ const { requireAuth } = require('../../utils/auth');
 const router = express.Router();
 const { Op } = require("sequelize");
 const { handleValidationErrors, validateSpot, validateReviews, validateQuery } = require('../../utils/validation');
+const review = require('../../db/models/review');
 
 
 
@@ -290,7 +291,9 @@ router.get('/:spotId/reviews', async (req, res, next) => {
                 }
             ]
         })
-        return res.json(reviews)
+        return res.json({
+            Reviews: reviews
+        })
     }
 })
 
@@ -344,7 +347,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
     } else if (spot.ownerId === userId) {
         const ownerBooking = await Booking.findAll({
             where: {
-                userId: userId
+                spotId: spotId
             },
             include: {
                 model: User,
