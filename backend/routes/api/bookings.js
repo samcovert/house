@@ -64,7 +64,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
 
 // Edit a booking
 router.put('/:bookingId', requireAuth, async (req, res, next) => {
-    const bookingId = req.params.bookingId
+    let bookingId = req.params.bookingId
     const userId = req.user.id
     const { startDate, endDate } = req.body
     const today = new Date()
@@ -111,7 +111,8 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
         where: { spotId: booking.spotId }
     })
     bookings.forEach(booking => {
-        if ((startDate >= booking.startDate && startDate <= booking.endDate) && (endDate >= booking.startDate && endDate <= booking.endDate)) {
+        bookingId = parseInt(bookingId)
+        if ((startDate >= booking.startDate && startDate <= booking.endDate) && (endDate >= booking.startDate && endDate <= booking.endDate) && booking.id !== bookingId) {
             return res.status(403).json({
                 "message": "Sorry, this spot is already booked for the specified dates",
                 "errors": {
@@ -119,21 +120,21 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                   "endDate": "End date conflicts with an existing booking"
                 }
             })
-        } else if (startDate >= booking.startDate && startDate <= booking.endDate) {
+        } else if (startDate >= booking.startDate && startDate <= booking.endDate && booking.id !== bookingId) {
             return res.status(403).json({
                 "message": "Sorry, this spot is already booked for the specified dates",
                 "errors": {
                   "startDate": "Start date conflicts with an existing booking"
                 }
             })
-        } else if (endDate >= booking.startDate && endDate <= booking.endDate) {
+        } else if (endDate >= booking.startDate && endDate <= booking.endDate && booking.id !== bookingId) {
             return res.status(403).json({
                 "message": "Sorry, this spot is already booked for the specified dates",
                 "errors": {
                   "endDate": "End date conflicts with an existing booking"
                 }
             })
-        } else if (startDate <= booking.startDate && endDate >= booking.endDate) {
+        } else if (startDate <= booking.startDate && endDate >= booking.endDate && booking.id !== bookingId) {
             return res.status(403).json({
                 "message": "Sorry, this spot is already booked for the specified dates",
                 "errors": {

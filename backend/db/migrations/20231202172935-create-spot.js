@@ -39,14 +39,14 @@ module.exports = {
         allowNull: false
       },
       lat: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         validate: {
           min: -90,
           max: 90
         }
       },
       lng: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         validate: {
           min: -90,
           max: 90
@@ -61,7 +61,7 @@ module.exports = {
         allowNull: false
       },
       price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         validate: {
           min: 0
         }

@@ -4,6 +4,7 @@ const { requireAuth } = require('../../utils/auth');
 const router = express.Router();
 const { Op } = require("sequelize");
 const { handleValidationErrors, validateSpot, validateReviews, validateQuery } = require('../../utils/validation');
+const review = require('../../db/models/review');
 
 
 
@@ -19,12 +20,69 @@ router.get('/', validateQuery, async (req, res, next) => {
             pagination.limit = size
             pagination.offset = size * (page - 1)
         }
+        page = +page
+        size = +size
+        maxLat = +maxLat
+        minLat = +minLat
+        maxLng = +maxLng
+        minLng = +minLng
+        maxPrice = +maxPrice
+        minPrice = +minPrice
+
+        const where = {}
+
+        if (minLat) {
+            where.lat = {
+                [Op.gte]: [minLat]
+            }
+        }
+        if (maxLat) {
+            where.lat = {
+                [Op.lte]: [maxLat]
+            }
+        }
+        if (minLat && maxLat) {
+            where.lat = {
+                [Op.between]: [minLat, maxLat]
+            }
+        }
+        if (minLng) {
+            where.lng = {
+                [Op.gte]: [minLng]
+            }
+        }
+        if (maxLng) {
+            where.lng = {
+                [Op.lte]: [maxLng]
+            }
+        }
+        if (minLng && maxLng) {
+            where.lng = {
+                [Op.between]: [minLng, maxLng]
+            }
+        }
+        if (maxPrice) {
+            where.price = {
+                [Op.lte]: [maxPrice]
+            }
+        }
+        if (minPrice) {
+            where.price = {
+                [Op.gte]: [minPrice]
+            }
+        }
+        if (minPrice && maxPrice) {
+            where.price = {
+                [Op.between]: [minPrice, maxPrice]
+            }
+        }
 
         const spots = await Spot.findAll({
             include: [
                 { model : Review },
                 { model: SpotImage }
             ],
+            where,
             ...pagination
         })
         let spotList = []
@@ -290,7 +348,9 @@ router.get('/:spotId/reviews', async (req, res, next) => {
                 }
             ]
         })
-        return res.json(reviews)
+        return res.json({
+            Reviews: reviews
+        })
     }
 })
 
@@ -344,7 +404,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
     } else if (spot.ownerId === userId) {
         const ownerBooking = await Booking.findAll({
             where: {
-                userId: userId
+                spotId: spotId
             },
             include: {
                 model: User,
