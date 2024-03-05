@@ -5,7 +5,7 @@ https://house-cc0e.onrender.com
 
 ![db-schema]
 
-[db-schema]: ./images/sams-house.png
+[db-schema]:
 
 ## API Documentation
 
