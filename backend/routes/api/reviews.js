@@ -38,10 +38,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
     reviewList.forEach(review => {
         const image = review.Spot.SpotImages
         image.forEach(img => {
-            // console.log(img.preview)
             if (img.preview === true) {
             review.Spot.previewImage = img.url
-            console.log(review)
             } else {
                 review.Spot.previewImage = 'No preview image found'
             }
