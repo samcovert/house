@@ -1,0 +1,15 @@
+.landing {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 25px
+}
+
+.landing img {
+    height: 300px;
+    width: 300px;
+}
+
+.spot-details {
+    display: flex;
+    justify-content: space-between;
+}
