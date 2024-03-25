@@ -138,10 +138,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
         spots.forEach(spot => {
             spotList.push(spot.toJSON())
         })
-        // console.log(spotList)
         spotList.forEach(spot => {
             spot.SpotImages.forEach(img => {
-                // console.log(img.previewImage)
                 if (img.preview === true) {
                     spot.previewImage = img.url
                 }
@@ -171,7 +169,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 // Get details of a spot by spotId
-router.get('/:spotId', requireAuth, async (req, res, next) => {
+router.get('/:spotId', async (req, res, next) => {
     const id = req.params.spotId;
 
    const spots = await Spot.findByPk(id, {
@@ -217,8 +215,13 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     const userId = req.user.id;
 
+    if (!userId) {
+        return res.status(403).json({
+            message: forbidden
+        })
+    }
     try{
-            const newSpot = Spot.build({
+            const newSpot = await Spot.create({
                 ownerId: userId,
                 address: address,
                 city: city,
@@ -230,7 +233,7 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
                 description: description,
                 price: price
             })
-            await newSpot.save();
+            // await newSpot.save();
             return res.status(201).json(newSpot)
     } catch(err) {
             console.error(err)
@@ -270,7 +273,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 // Edit a spot
 router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     const spotId = req.params.spotId;
-    const { address, city, state, country, lat, lng, name, description } = req.body
+    const { address, city, state, country, lat, lng, name, description, price } = req.body
     const user = req.user.id
 
     try {
@@ -292,7 +295,8 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
                 lat: lat,
                 lng: lng,
                 name: name,
-                description: description
+                description: description,
+                price: price
             })
             await spot.save()
             return res.json(spot)

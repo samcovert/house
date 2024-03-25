@@ -21,32 +21,32 @@ module.exports = {
       country: 'US',
       lat: '33.4484',
       lng: '112.0704',
-      name: 'phx house',
+      name: 'PHX House',
       description: 'great house',
       price: '300'
     },
     {
       ownerId: 2,
       address: '321 south st',
-      city: 'Albuquerque',
-      state: 'NM',
+      city: 'CaveCreek',
+      state: 'AZ',
       country: 'US',
       lat: '35.4484',
       lng: '108.0704',
-      name: 'abq house',
+      name: 'Crunk Creek House',
       description: 'big house',
       price: '500'
     },
     {
       ownerId: 3,
       address: '111 west st',
-      city: 'Albuquerque',
-      state: 'NM',
+      city: 'San Diego',
+      state: 'CA',
       country: 'US',
       lat: '36.4484',
       lng: '111.0704',
-      name: 'that one house',
-      description: 'small house',
+      name: 'The Cliffhanger',
+      description: 'wild house',
       price: '100'
     },
    ], { validate: true })
@@ -57,7 +57,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      name: { [Op.in]: ['phx house', 'abq house', 'that one house'] }
+      name: { [Op.in]: ['PHX House', 'Crunk Creek House', 'The Cliffhanger'] }
     }, {})
   }
 };

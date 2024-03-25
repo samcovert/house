@@ -1,0 +1,86 @@
+
+.spot-details-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.spot-name {
+    margin-bottom: 20px;
+}
+
+.spot-details {
+    font-size: 18px;
+    color: gray;
+    margin-bottom: 20px;
+}
+
+.spot-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+
+.spot-images img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.spot-host {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.spot-description {
+    margin-bottom: 20px;
+}
+
+.reserve-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: flex-end;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.reserve-box span, .reserve-box button {
+    margin-right: 10px;
+}
+
+.reserve-box button {
+    padding: 10px 20px;
+    background-color: rgb(247, 67, 67);
+    color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.reserve-box button:hover {
+    background-color: red;
+}
+
+.reviews {
+    background-color: rgb(231, 229, 229);
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.reviews > div {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.reviews p {
+    color: rgb(56, 55, 55);
+    margin-bottom: 10px;
+}
