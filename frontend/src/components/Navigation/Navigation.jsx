@@ -9,7 +9,7 @@ function Navigation({ isLoaded }) {
   return (
     <nav>
       <div>
-        <NavLink to="/"><img className='logo' src='../../images/logo.png'></img></NavLink>
+        <NavLink to="/"><img className='logo' src='https://samsclub13.s3.us-west-2.amazonaws.com/logo.png'></img></NavLink>
       </div>
       <div hidden={!sessionUser} className='create-spot'>
         <NavLink to='/spots/new'>
