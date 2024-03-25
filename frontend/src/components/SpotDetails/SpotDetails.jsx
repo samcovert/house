@@ -22,7 +22,7 @@ const SpotDetails = () => {
         }})
     const months = ["Jan", "Feb", 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     const session = useSelector((state) => state.session.user)
-    const userHasReview = reviewList.find(currReview => currReview.userId === session.id)
+    const userHasReview = reviewList.find(currReview => currReview.userId === session?.id)
     useEffect(() => {
         dispatch(fetchSpotDetails(spotId))
             .then(dispatch(fetchReviews(spotId)))
@@ -57,7 +57,7 @@ const SpotDetails = () => {
         <div className="reviews">
             <div className="review-modal">
                 <span
-                hidden={!session || spot.Owner.id === session.id || !userHasReview}
+                hidden={!session || spot.Owner.id === session?.id || !userHasReview}
                 >
                     <OpenModalButton
                     buttonText = 'Post Your Review'
@@ -76,7 +76,7 @@ const SpotDetails = () => {
                         <p>{review.firstName}</p>
                         <p>{months[new Date(review.createdAt).getMonth()]} {review.createdAt.split('-')[0]}</p>
                         <p>{review.review}</p>
-                        <span hidden={review.userId !== session.id}>
+                        <span hidden={review.userId !== session?.id}>
                             <OpenModalButton
                             buttonText='Delete'
                             modalComponent={<DeleteReview reviewId={review.id}/>}
