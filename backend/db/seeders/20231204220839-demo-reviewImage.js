@@ -15,15 +15,15 @@ module.exports = {
     [
       {
         reviewId: 1,
-        url: 'review.jpeg'
+        url: '../../images/phxhouse.jpeg'
       },
       {
         reviewId: 2,
-        url: 'image.jpeg'
+        url: '../../images/crunkcreek.jpeg'
       },
       {
         reviewId: 3,
-        url: 'reviewimage.jpeg'
+        url: '../../images/cliffhanger.jpeg'
       },
     ], { validate: true })
   },

@@ -15,17 +15,17 @@ module.exports = {
     [
       {
         spotId: 1,
-        url: 'picture.jpeg',
+        url: '../../images/phxhouse.jpeg',
         preview: true
       },
       {
         spotId: 2,
-        url: 'house.jpeg',
-        preview: false
+        url: '../../images/crunkcreek.jpeg',
+        preview: true
       },
       {
         spotId: 3,
-        url: 'housepic.jpeg',
+        url: '../../images/cliffhanger.jpeg',
         preview: true
       },
     ], { validate: true })

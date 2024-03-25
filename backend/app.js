@@ -9,6 +9,8 @@ const routes = require('./routes');
 const { environment } = require('./config');
 const { ValidationError } = require('sequelize');
 const isProduction = environment === 'production';
+const path = require("path");
+
 
 const app = express();
 
@@ -16,6 +18,9 @@ app.use(morgan('dev'));
 
 app.use(cookieParser());
 app.use(express.json());
+// app.use('/images', express.static('./images'));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Security Middleware
 if (!isProduction) {
@@ -81,6 +86,7 @@ app.use((err, _req, res, _next) => {
       stack: isProduction ? null : err.stack
     });
   });
+
 
 
   module.exports = app;
