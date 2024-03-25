@@ -138,10 +138,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
         spots.forEach(spot => {
             spotList.push(spot.toJSON())
         })
-        // console.log(spotList)
         spotList.forEach(spot => {
             spot.SpotImages.forEach(img => {
-                // console.log(img.previewImage)
                 if (img.preview === true) {
                     spot.previewImage = img.url
                 }

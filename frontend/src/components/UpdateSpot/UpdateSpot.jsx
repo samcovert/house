@@ -191,7 +191,7 @@ const UpdateSpot = () => {
                         {errors.img3 && <p className="errors">{errors.img3}</p>}
                         <button
                             type="submit"
-                        >Create Spot</button>
+                        >Update Spot</button>
                     </form>
                 </>
             }

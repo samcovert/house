@@ -21,12 +21,8 @@ const SpotDetails = () => {
             review.push(currReview)
         }})
     const months = ["Jan", "Feb", 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    // console.log(reviews)
-    // console.log(review)
     const session = useSelector((state) => state.session.user)
-    // console.log(reviews.User.id === session.id)
     const userHasReview = reviewList.find(currReview => currReview.userId === session.id)
-    // console.log(userHasReview)
     useEffect(() => {
         dispatch(fetchSpotDetails(spotId))
             .then(dispatch(fetchReviews(spotId)))
@@ -54,14 +50,14 @@ const SpotDetails = () => {
         <div className="spot-descrition">{spot.description}</div>
         <div className="reserve-box">
             <span> ${spot.price} per night</span>
-            <span> ⭐️{spot.avgStarRating}</span>
-            <span> {spot.numReviews} reviews</span>
+            <span> ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}</span>
+            <span> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
             <button onClick={handleClick}>Reserve</button>
         </div>
         <div className="reviews">
             <div className="review-modal">
                 <span
-                hidden={!session || spot.Owner.id === session.id || userHasReview}
+                hidden={!session || spot.Owner.id === session.id || !userHasReview}
                 >
                     <OpenModalButton
                     buttonText = 'Post Your Review'
@@ -73,6 +69,8 @@ const SpotDetails = () => {
                 Be the first to post a review!
             </span>
             <div className="review-data">
+            <span> ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}</span>
+            <span> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
                 {review && review.map((review, index) => (
                     <div key={index}>
                         <p>{review.firstName}</p>

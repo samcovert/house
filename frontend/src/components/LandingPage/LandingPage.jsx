@@ -13,11 +13,10 @@ const LandingPage = () => {
     useEffect(() => {
         dispatch(fetchSpots())
     }, [dispatch])
-console.log(spots)
     return (
         <main className="landing">
             {spots.map(spot => (
-                <NavLink key={spot.name} to={`spots/${spot.id}`}>
+                <NavLink key={spot.name} to={`spots/${spot.id}`} title={spot.name}>
                     <div>
                         <img src={`${spot.previewImage}`}></img>
                     </div>
@@ -26,11 +25,11 @@ console.log(spots)
                             {spot.city}, {spot.state}
                         </span>
                         <span className="rating">
-                            ⭐️{spot.avgRating}
+                            {spot.avgRating ? `⭐️${parseInt(spot.avgRating).toFixed(1)}` : "New"}
                         </span>
                     </div>
                         <div className="price">
-                            ${spot.price}
+                            ${spot.price} night
                         </div>
                 </NavLink>
             ))}

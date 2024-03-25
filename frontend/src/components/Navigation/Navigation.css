@@ -12,6 +12,10 @@ nav {
     border-bottom: 1px solid black;
 }
 
+.create-spot {
+    justify-self: flex-end;
+}
+
 .logo {
     height: 50px;
     width: 50px;

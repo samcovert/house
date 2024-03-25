@@ -18,6 +18,8 @@ const CreateNewSpot = () => {
     const [img, setImg] = useState('')
     const [img2, setImg2] = useState('')
     const [img3, setImg3] = useState('')
+    const [img4, setImg4] = useState('')
+    const [img5, setImg5] = useState('')
     const [lat, setLat] = useState(0)
     const [lng, setLng] = useState(0)
     const [errors, setErrors] = useState({})
@@ -184,6 +186,20 @@ const CreateNewSpot = () => {
                     placeholder="Image URL"
                 />
                 {errors.img3 && <p className="errors">{errors.img3}</p>}
+                <input
+                    type="text"
+                    value={img4}
+                    onChange={(e) => setImg4(e.target.value)}
+                    placeholder="Image URL"
+                />
+                {errors.img4 && <p className="errors">{errors.img4}</p>}
+                <input
+                    type="text"
+                    value={img5}
+                    onChange={(e) => setImg5(e.target.value)}
+                    placeholder="Image URL"
+                />
+                {errors.img5 && <p className="errors">{errors.img5}</p>}
                 <button
                 type="submit"
                 >Create Spot</button>

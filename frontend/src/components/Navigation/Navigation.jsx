@@ -8,15 +8,18 @@ function Navigation({ isLoaded }) {
 
   return (
     <nav>
-<div>
-<NavLink to="/"><img className='logo' src='../../images/logo.png'></img></NavLink>
-</div>
+      <div>
+        <NavLink to="/"><img className='logo' src='../../images/logo.png'></img></NavLink>
+      </div>
+      <div hidden={!sessionUser} className='create-spot'>
+        <NavLink to='/spots/new'>
+          <button>Create New Spot</button>
+        </NavLink>
+      </div>
       {isLoaded && (
-          <ProfileButton user={sessionUser} />
+        <ProfileButton user={sessionUser} />
       )}
-
     </nav>
-
   );
 }
 

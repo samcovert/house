@@ -17,6 +17,9 @@ const PostReviewModal = ({spotId}) => {
     const [errors, setErrors] = useState({})
     spotId = +spotId
     const user = useSelector(state => state.session.user)
+    firstName
+    errors
+    const disabled = newReview.length < 10 || currSelection === 0;
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -53,8 +56,9 @@ const PostReviewModal = ({spotId}) => {
                                 <FaStar />
                         </div>
                     })}
+                    Stars
                 </div>
-                <button>Submit Your Review</button>
+                <button disabled={disabled}>Submit Your Review</button>
             </form>
         </div>
     )

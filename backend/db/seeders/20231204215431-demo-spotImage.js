@@ -15,18 +15,48 @@ module.exports = {
     [
       {
         spotId: 1,
-        url: '../../images/phxhouse.jpeg',
+        url: 'https://samsclub13.s3.us-west-2.amazonaws.com/phxhouse.jpeg',
         preview: true
       },
       {
         spotId: 2,
-        url: '../../images/crunkcreek.jpeg',
+        url: 'https://samsclub13.s3.us-west-2.amazonaws.com/crunkcreek.jpeg',
         preview: true
       },
       {
         spotId: 3,
-        url: '../../images/cliffhanger.jpeg',
+        url: 'https://samsclub13.s3.us-west-2.amazonaws.com/cliffhanger.jpeg',
         preview: true
+      },
+      {
+        spotId: 1,
+        url: 'https://samsclub13.s3.us-west-2.amazonaws.com/phxhouse2.jpeg',
+        preview: false
+      },
+      {
+        spotId: 1,
+        url: 'https://samsclub13.s3.us-west-2.amazonaws.com/phxhouse3.jpeg',
+        preview: false
+      },
+      {
+        spotId: 2,
+        url: 'https://samsclub13.s3.us-west-2.amazonaws.com/crunkcreek2.jpeg',
+        preview: false
+      },
+      {
+        spotId: 2,
+        url: 'https://samsclub13.s3.us-west-2.amazonaws.com/crunkcreek3.jpeg',
+        preview: false
+      },
+      {
+        spotId: 3,
+        url: 'https://samsclub13.s3.us-west-2.amazonaws.com/cliffhanger2.jpeg',
+        preview: false
+      },
+      {
+        spotId: 3,
+        url: 'https://samsclub13.s3.us-west-2.amazonaws.com/cliffhanger3.jpeg',
+        preview: false
       },
     ], { validate: true })
   },

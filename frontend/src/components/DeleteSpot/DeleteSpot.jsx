@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux"
 import { useModal } from "../../context/Modal"
 import { fetchDeleteSpot } from "../../store/spots"
 import { useState } from "react"
+import './DeleteSpot.css'
 
 
 const DeleteSpot = ({ spotId }) => {
