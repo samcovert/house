@@ -52,7 +52,7 @@ function LoginFormModal() {
           setErrors(data.errors);
         }
       });
-  }
+  };
 
   return (
     <>

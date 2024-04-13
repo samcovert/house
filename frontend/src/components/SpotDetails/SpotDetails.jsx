@@ -23,9 +23,7 @@ const SpotDetails = () => {
     })
     const months = ["Jan", "Feb", 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     const session = useSelector((state) => state.session.user)
-
     const userHasReview = reviewList.find(currReview => currReview.userId === session?.id)
-
     useEffect(() => {
         dispatch(fetchSpotDetails(spotId))
             .then(dispatch(fetchReviews(spotId)))
