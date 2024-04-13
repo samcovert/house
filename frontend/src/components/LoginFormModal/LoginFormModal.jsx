@@ -8,19 +8,35 @@ function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
+
+  const isFormValid = () => {
+    return credential.length >= 4 && password.length >= 6
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrors({});
+    if (!isFormValid()) {
+      setErrors(["The provided credentials were invalid"])
+      return
+    }
+    setErrors([]);
+
     return dispatch(sessionActions.login({ credential, password }))
-      .then(closeModal)
+      .then(() => {
+        closeModal()
+      })
       .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          setErrors(data.errors);
+        if (!res.ok) {
+          setErrors(["The provided credentials were invalid"]);
         }
+        // const data = await res.json();
+        // if (data && data.status === 401) {
+        //   setErrors(["The provided credentials were invalid"]);
+        // } else if (data && data.errors) {
+        //   setErrors(data.errors)
+        // }
       });
   };
 
@@ -60,10 +76,17 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
-        )}
-        <button type="submit">Log In</button>
+        <div className='error-message'>
+          {errors.length > 0 && (
+            <div className="error-messages">
+              {errors.map((error, idx) => (
+                <p key={idx} className="error-text">{error}</p>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <button type="submit" disabled={!isFormValid()}>Log In</button>
         <button onClick={handleDemoLogin}>Log In as Demo User</button>
       </form>
     </>
