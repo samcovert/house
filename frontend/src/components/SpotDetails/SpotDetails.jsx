@@ -13,20 +13,17 @@ const SpotDetails = () => {
     const dispatch = useDispatch()
     const spot = useSelector((state) => state.spots[spotId])
     const [isLoaded, setIsLoaded] = useState(false)
-    const reviews = useSelector((state) => state.reviews)
-    const reviewList = Object.values(reviews)
-    const review = []
-    reviewList.forEach((currReview) => {
-        if (currReview.spotId === +spotId) {
-            review.push(currReview)
-        }
-    })
+    const reviewList = useSelector((state) => state.reviews)
+    const reviews = Object.values(reviewList).filter(review => review.spotId === +spotId)
+    console.log(reviews)
+
     const months = ["Jan", "Feb", 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     const session = useSelector((state) => state.session.user)
-    const userHasReview = reviewList.find(currReview => currReview.userId === session?.id)
+    const userHasReview = reviews.find(currReview => currReview.userId === session?.id)
+
     useEffect(() => {
-        dispatch(fetchSpotDetails(spotId))
-            .then(dispatch(fetchReviews(spotId)))
+        dispatch(fetchSpotDetails(+spotId))
+            .then(dispatch(fetchReviews(+spotId)))
             .then(() => setIsLoaded(true))
     }, [dispatch, spotId, isLoaded])
 
@@ -66,15 +63,15 @@ const SpotDetails = () => {
                                 />
                             </span>
                         </div>
-                        <span hidden={review.length !== 0 || (session.user && spot.Owner.id === session.id)}>
+                        <span hidden={reviews.length !== 0 || (session.user && spot.Owner.id === session.id)}>
                             Be the first to post a review!
                         </span>
                         <div className="review-data">
                             <span> ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}</span>
                             <span> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
-                            {review && review.map((review) => (
+                            {reviews && reviews.map((review) => (
                                 <div key={review.id}>
-                                    <p>{review.firstName}</p>
+                                    <p>{review.User.firstName}</p>
                                     <p>{months[new Date(review.createdAt).getMonth()]} {review.createdAt.split('-')[0]}</p>
                                     <p>{review.review}</p>
                                     <span hidden={review.userId !== session?.id}>

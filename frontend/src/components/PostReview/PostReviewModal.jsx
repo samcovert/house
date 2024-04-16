@@ -17,7 +17,6 @@ const PostReviewModal = ({spotId}) => {
     const [errors, setErrors] = useState({})
     spotId = +spotId
     const user = useSelector(state => state.session.user)
-    firstName
     errors
     const disabled = newReview.length < 10 || currSelection === 0;
 
@@ -25,6 +24,7 @@ const PostReviewModal = ({spotId}) => {
         e.preventDefault()
         if (user) setFirstName(user.firstName)
         let review = {
+            User: user,
             spotId: spotId,
             userId: user.id,
             review: newReview,

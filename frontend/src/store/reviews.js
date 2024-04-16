@@ -19,10 +19,10 @@ const createReview = (review) => {
     }
 }
 
-const deleteReview = (review) => {
+const deleteReview = (reviewId) => {
     return {
         type: DELETE,
-        review
+        reviewId
     }
 }
 
@@ -42,9 +42,11 @@ export const fetchCreateReview = (spotId, review) => async (dispatch) => {
         body: JSON.stringify(review),
         headers: { "Content-Type": "application/json" }
     })
-
+    console.log(review)
     if (res.ok) {
         const newReview = await res.json()
+        newReview.spotId = +spotId
+        console.log(newReview)
         dispatch(createReview(newReview))
         return newReview
     }
@@ -56,7 +58,7 @@ export const fetchDeleteReview = (reviewId) => async (dispatch) => {
     })
     if (res.ok) {
         let review = await res.json()
-        dispatch(deleteReview(review))
+        dispatch(deleteReview(reviewId))
         return review
     }
 }
@@ -70,16 +72,15 @@ const reviewsReducer = (state = initialState, action) => {
             return reviewsState
         }
         case CREATE_REVIEW: {
-            const newReview = action.review;
-            return {
+            const newState = {
                 ...state,
-                [newReview.id]: newReview
+                [action.review.id]: action.review
             }
+            return newState
         }
         case DELETE: {
-            const { review } = action;
             const newState = { ...state };
-            delete newState[review.id];
+            delete newState[action.reviewId]
             return newState;
         }
         default:
