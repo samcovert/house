@@ -34,7 +34,7 @@ const ManageSpots = () => {
             <h1 className="header">Manage Spots</h1>
             <div className="spot-cards">
             {spots.map(spot => (
-                <div className="card">
+                <div key={spot.id}className="card">
                 <NavLink key={spot.name} to={`/spots/${spot.id}`}>
                     <div>
                         <img src={`${spot.previewImage}`}></img>
