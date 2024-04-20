@@ -6,6 +6,14 @@ const GET_SPOT_DETAILS = '/spots/GET_SPOT_DETAILS'
 const CREATE_NEW_SPOT = '/spots/CREATE_NEW_SPOT'
 const UPDATE_SPOT = '/spots/UPDATE_SPOT'
 const ADD_IMG = '/spots/ADD_IMG'
+const DELETE_SPOT = '/spots/DELETE_SPOT'
+
+const deleteSpot = spotId => {
+    return {
+        type: DELETE_SPOT,
+        spotId
+    }
+}
 
 const addImg = img => {
     return {
@@ -112,6 +120,7 @@ export const fetchUpdateSpot = (spotId, spot) => async (dispatch) => {
     if (res.ok) {
         const updatedSpot = await res.json()
         dispatch(updateSpot(updatedSpot))
+        dispatch(fetchSpots())
         return updatedSpot
     }
 }
@@ -121,8 +130,10 @@ export const fetchDeleteSpot = (spotId) => async (dispatch) => {
         method: "DELETE"
     })
     if (res.ok) {
-        dispatch(fetchCurrSpots())
-        return res
+        const spot = await res.json()
+        dispatch(deleteSpot(spotId))
+        dispatch(fetchSpots())
+        return spot
     }
 }
 
@@ -164,6 +175,11 @@ const spotsReducer = (state = initialState, action) => {
                     SpotImages: [action.img]
                 }
             }
+        }
+        case DELETE_SPOT: {
+            const newState = { ...state };
+            delete newState[action.spotId]
+            return newState;
         }
         default:
             return state
