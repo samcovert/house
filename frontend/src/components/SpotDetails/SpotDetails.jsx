@@ -9,13 +9,13 @@ import OpenModalButton from '../OpenModalButton'
 import DeleteReview from "../DeleteReview";
 
 const SpotDetails = () => {
-    const { spotId } = useParams();
+    let { spotId } = useParams();
+    spotId = +spotId
     const dispatch = useDispatch()
     const spot = useSelector((state) => state.spots[spotId])
     const [isLoaded, setIsLoaded] = useState(false)
     const reviewList = useSelector((state) => state.reviews)
     const reviews = Object.values(reviewList).filter(review => review.spotId === +spotId)
-    console.log(reviews)
 
     const months = ["Jan", "Feb", 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     const session = useSelector((state) => state.session.user)
@@ -25,11 +25,13 @@ const SpotDetails = () => {
         dispatch(fetchSpotDetails(+spotId))
             .then(dispatch(fetchReviews(+spotId)))
             .then(() => setIsLoaded(true))
-    }, [dispatch, spotId, isLoaded])
+    }, [dispatch, spotId])
+
 
     const handleClick = () => {
         alert("Feature Coming Soon...")
     }
+
 
     return (
         <>
@@ -59,7 +61,7 @@ const SpotDetails = () => {
                             >
                                 <OpenModalButton
                                     buttonText='Post Your Review'
-                                    modalComponent={<PostReviewModal spotId={spotId} />}
+                                    modalComponent={<PostReviewModal spotId={spotId}/>}
                                 />
                             </span>
                         </div>
@@ -69,7 +71,7 @@ const SpotDetails = () => {
                         <div className="review-data">
                             <span> ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}</span>
                             <span> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
-                            {reviews && reviews.map((review) => (
+                            {reviews && reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((review) => (
                                 <div key={review.id}>
                                     <p>{review.User.firstName}</p>
                                     <p>{months[new Date(review.createdAt).getMonth()]} {review.createdAt.split('-')[0]}</p>
@@ -77,14 +79,15 @@ const SpotDetails = () => {
                                     <span hidden={review.userId !== session?.id}>
                                         <OpenModalButton
                                             buttonText='Delete'
-                                            modalComponent={<DeleteReview reviewId={review.id} />}
+                                            modalComponent={<DeleteReview reviewId={review.id} spotId={spotId} />}
                                         />
                                     </span>
                                 </div>
                             ))}
                         </div>
                     </div>
-                </main>}
+                </main>
+                }
         </>
 
     )

@@ -1,0 +1,76 @@
+.manage-spots {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.spot-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 35px;
+    row-gap: 25px;
+}
+
+
+.card {
+    border: 1px solid #ccc; /* Add border around each card */
+    border-radius: 8px; /* Optional: if you want rounded corners */
+    overflow: hidden; /* Ensures the children don't overflow the rounded corners */
+}
+
+.card img {
+    width: 100%; /* Ensure image takes up entire container width */
+    height: 200px; /* Fixed height for consistency */
+    object-fit: cover; /* Ensures the image covers the area properly */
+    background: #f3f3f3; /* Placeholder background color */
+}
+
+.card .spot-details {
+    padding: 15px;
+    background-color: #f9f9f9; /* Light grey background for details section */
+    border-bottom: 1px solid #ccc; /* Line separating details from price */
+}
+
+.card .spot-details .city, .card .spot-details .rating {
+    display: block; /* Each detail on its own line */
+    margin-bottom: 5px; /* Spacing between details */
+}
+
+.card .price {
+    padding: 15px;
+    background-color: #fff; /* White background for the price */
+    font-size: 18px; /* Larger font size for price */
+    font-weight: bold; /* Make price bold */
+    display: flex; /* Flex layout to align buttons and price */
+    justify-content: space-between; /* Space out price and buttons */
+    align-items: center;
+}
+
+.card button {
+    padding: 10px 20px;
+    margin: 0 5px; /* Spacing between buttons */
+    border: none;
+    color: white;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline from buttons if any */
+    border-radius: 4px; /* Rounded corners for buttons */
+}
+
+.card .update {
+    background-color: #4CAF50; /* Green background for update */
+}
+
+.card .delete {
+    background-color: #f44336; /* Red background for delete */
+}
+
+/* Hover effects for buttons */
+.card button:hover {
+    opacity: 0.8;
+}

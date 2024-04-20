@@ -1,7 +1,58 @@
+
+
+.post-review {
+    margin: auto;
+    background: white;
+    padding: 20px;
+}
+
+.post-review h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.review-text {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.star-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
 .star-rating .filled {
     color: gold;
 }
 
+
 .star-rating .empty {
-    color: gray;
+    color: #cacaca;
+}
+
+
+.star-rating > div {
+    cursor: pointer;
+}
+
+.review-button  {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+:disabled {
+    background-color: #cdcdcd;
+    cursor: not-allowed;
 }

@@ -6,7 +6,7 @@ import './PostReviewModal.css'
 import { fetchCreateReview } from "../../store/reviews"
 
 
-const PostReviewModal = ({spotId}) => {
+const PostReviewModal = ({ spotId }) => {
     const dispatch = useDispatch()
     const { closeModal } = useModal()
     let starSelect = [1, 2, 3, 4, 5]
@@ -24,41 +24,42 @@ const PostReviewModal = ({spotId}) => {
         e.preventDefault()
         if (user) setFirstName(user.firstName)
         let review = {
-            User: user,
+            User: { firstName: firstName },
             spotId: spotId,
             userId: user.id,
             review: newReview,
             stars: currSelection,
         }
-        await dispatch(fetchCreateReview(spotId, review))
-        .catch(async (res) => {
-            let data = await res.json()
-            if (data && data.errors) setErrors(data.errors)
-        })
+        await dispatch(fetchCreateReview(spotId, review, user))
+            .catch(async (res) => {
+                let data = await res.json()
+                if (data && data.errors) setErrors(data.errors)
+            })
         closeModal()
     }
+
     return (
         <div>
             <form className="post-review" onSubmit={handleSubmit}>
                 <h3>How was your Stay?</h3>
-                <textarea value={newReview}
-                onChange={e => setNewReview(e.target.value)}
-                rows="7" cols="30" placeholder="Leave your review here...">
+                <textarea className="review-text" value={newReview}
+                    onChange={e => setNewReview(e.target.value)}
+                    rows="7" cols="30" placeholder="Leave your review here...">
                 </textarea>
                 <div className="star-rating">
                     {starSelect.map(selection => {
                         return <div key={selection}
-                        className={currSelection >= selection || hover >= selection ? "filled" : "empty"}
-                        onMouseEnter={() => setHover(selection)}
-                        onMouseLeave={() => setHover(0)}
-                        onClick={() => setCurrSelection(selection)}
+                            className={currSelection >= selection || hover >= selection ? "filled" : "empty"}
+                            onMouseEnter={() => setHover(selection)}
+                            onMouseLeave={() => setHover(0)}
+                            onClick={() => setCurrSelection(selection)}
                         >
-                                <FaStar />
+                            <FaStar />
                         </div>
                     })}
                     Stars
                 </div>
-                <button disabled={disabled}>Submit Your Review</button>
+                <button className="review-button" disabled={disabled}>Submit Your Review</button>
             </form>
         </div>
     )

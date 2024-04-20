@@ -5,6 +5,14 @@ const GET_ALL_SPOTS = '/spots/GET_ALL_SPOTS'
 const GET_SPOT_DETAILS = '/spots/GET_SPOT_DETAILS'
 const CREATE_NEW_SPOT = '/spots/CREATE_NEW_SPOT'
 const UPDATE_SPOT = '/spots/UPDATE_SPOT'
+const ADD_IMG = '/spots/ADD_IMG'
+
+const addImg = img => {
+    return {
+        type: ADD_IMG,
+        img
+    }
+}
 
 const getAllSpots = spots => {
     return {
@@ -34,6 +42,20 @@ const updateSpot = updatedSpot => {
     }
 }
 
+export const fetchAddImg = (spotId, img) => async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(img)
+    })
+    if (res.ok) {
+        const newImg = await res.json()
+        dispatch(addImg(newImg))
+        return newImg
+    }
+}
 
 export const fetchSpots = () => async (dispatch) => {
     const res = await fetch('/api/spots')
@@ -132,6 +154,15 @@ const spotsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 [action.updatedSpot.id]: {...state[action.updatedSpot]}
+            }
+        }
+        case ADD_IMG: {
+            return {
+                ...state,
+                [action.spotId]: {
+                    ...state.spots[action.spotId],
+                    SpotImages: [action.img]
+                }
             }
         }
         default:

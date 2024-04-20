@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { fetchNewSpot } from "../../store/spots"
-import { useNavigate } from "react-router-dom"
+import { fetchAddImg, fetchNewSpot } from "../../store/spots"
+import { useNavigate, useParams } from "react-router-dom"
 import './CreateNewSpot.css'
 
 
@@ -24,6 +24,8 @@ const CreateNewSpot = () => {
     const [lng, setLng] = useState(0)
     const [errors, setErrors] = useState({})
     const user = useSelector(state => state.session.user)
+    let { spotId } = useParams()
+    spotId = +spotId
 
 
     const handleSubmit = async (e) => {
@@ -60,21 +62,22 @@ const CreateNewSpot = () => {
                 lng: lng,
             }
             const newSpot = await dispatch(fetchNewSpot(payload))
-
+            dispatch(fetchAddImg(spotId, img))
             if (newSpot) {
                 navigate(`/spots/${newSpot.id}`)
-
             }
         }
     }
 
     return (
-        <>
+        <main className="creation">
+            <div className="heading">
             <h1>Create A New Spot</h1>
             <h2>Where&apos;s your place located?</h2>
             <p>Guests will only get your exact address once they booked a reservation.</p>
+            </div>
             <form onSubmit={handleSubmit}>
-                <label>
+                <label className="country">
                     Country
                     <input
                         type="text"
@@ -84,7 +87,7 @@ const CreateNewSpot = () => {
                     />
                 </label>
                 {errors.country && <p className="errors">{errors.country}</p>}
-                <label>
+                <label className="street">
                     Street Address
                     <input
                         type="text"
@@ -94,7 +97,7 @@ const CreateNewSpot = () => {
                     />
                     {errors.address && <p className="errors">{errors.address}</p>}
                 </label>
-                <label>
+                <label className="city">
                     City
                     <input
                         type="text"
@@ -104,7 +107,7 @@ const CreateNewSpot = () => {
                     />
                     {errors.city && <p className="errors">{errors.city}</p>}
                 </label>
-                <label>
+                <label className="state">
                     State
                     <input
                         type="text"
@@ -114,7 +117,7 @@ const CreateNewSpot = () => {
                     />
                     {errors.state && <p className="errors">{errors.state}</p>}
                 </label>
-                <label>
+                <label className="lat">
                     Latitude
                     <input
                         type="text"
@@ -123,7 +126,7 @@ const CreateNewSpot = () => {
                         placeholder="Latitude"
                     />
                 </label>
-                <label>
+                <label className="lng">
                     Longitude
                     <input
                         type="text"
@@ -132,7 +135,7 @@ const CreateNewSpot = () => {
                         placeholder="Longitude"
                     />
                 </label>
-                <h2>Describe your place to guests</h2>
+                <h2 className="description">Describe your place to guests</h2>
                 <p>Mention the best features of your space, any special amentities like
                     fast wifi or parking, and what you love about the neighborhood</p>
                 <input
@@ -142,7 +145,7 @@ const CreateNewSpot = () => {
                     placeholder="Please write at least 30 characters"
                 />
                 {errors.description && <p className="errors">{errors.description}</p>}
-                <h2>Create a title for your spot</h2>
+                <h2 className="title">Create a title for your spot</h2>
                 <p>Catch guests attention with a spot title that highlights what makes your place special.</p>
                 <input
                     type="text"
@@ -151,7 +154,7 @@ const CreateNewSpot = () => {
                     placeholder="Name of your spot"
                 />
                 {errors.name && <p className="errors">{errors.name}</p>}
-                <h2>Set a base price for your spot</h2>
+                <h2 className="price">Set a base price for your spot</h2>
                 <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                 <label>
                     $
@@ -163,7 +166,7 @@ const CreateNewSpot = () => {
                     />
                     {errors.price && <p className="errors">{errors.price}</p>}
                 </label>
-                <h2>Liven up your spot with photos</h2>
+                <h2 className="photos">Liven up your spot with photos</h2>
                 <p>Submit a link to at least one photo to publish your spot.</p>
                 <input
                     type="text"
@@ -200,11 +203,11 @@ const CreateNewSpot = () => {
                     placeholder="Image URL"
                 />
                 {errors.img5 && <p className="errors">{errors.img5}</p>}
-                <button
+                <button className="create-spot-button"
                 type="submit"
                 >Create Spot</button>
             </form>
-        </>
+        </main>
     )
 }
 

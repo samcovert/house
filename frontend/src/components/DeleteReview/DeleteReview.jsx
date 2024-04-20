@@ -4,15 +4,17 @@ import { useState } from "react"
 import { fetchDeleteReview } from "../../store/reviews"
 import './DeleteReview.css'
 
-const DeleteReview = ({ reviewId }) => {
+
+const DeleteReview = ({ reviewId, spotId }) => {
     const { closeModal } = useModal()
     const dispatch = useDispatch()
     const [errors, setErrors] = useState({})
+    spotId = +spotId
 
     const handleClick = (e) => {
         e.preventDefault()
         setErrors({})
-        dispatch(fetchDeleteReview(reviewId))
+        dispatch(fetchDeleteReview(reviewId, spotId))
             .then(closeModal)
             .catch(async (res) => {
                 let data = await res.json()

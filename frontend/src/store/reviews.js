@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import { fetchSpotDetails } from "./spots";
 
 
 const GET_REVIEWS = 'reviews/GET_REVIEWS';
@@ -19,6 +20,7 @@ const createReview = (review) => {
     }
 }
 
+
 const deleteReview = (reviewId) => {
     return {
         type: DELETE,
@@ -36,29 +38,34 @@ export const fetchReviews = (spotId) => async (dispatch) => {
     }
 }
 
-export const fetchCreateReview = (spotId, review) => async (dispatch) => {
+export const fetchCreateReview = (spotId, review, user) => async (dispatch) => {
     const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: "POST",
         body: JSON.stringify(review),
         headers: { "Content-Type": "application/json" }
     })
-    console.log(review)
+
     if (res.ok) {
         const newReview = await res.json()
         newReview.spotId = +spotId
-        console.log(newReview)
-        dispatch(createReview(newReview))
-        return newReview
+        const reviewData = {
+            ...newReview,
+            User: user
+        }
+        dispatch(createReview(reviewData))
+        dispatch(fetchSpotDetails(spotId))
+        return reviewData
     }
 }
 
-export const fetchDeleteReview = (reviewId) => async (dispatch) => {
+export const fetchDeleteReview = (reviewId, spotId) => async (dispatch) => {
     const res = await csrfFetch(`/api/reviews/${reviewId}`, {
         method: "DELETE"
     })
     if (res.ok) {
         let review = await res.json()
         dispatch(deleteReview(reviewId))
+        dispatch(fetchSpotDetails(spotId))
         return review
     }
 }
