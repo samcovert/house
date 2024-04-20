@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import { fetchSpotDetails } from "./spots";
 
 
 const GET_REVIEWS = 'reviews/GET_REVIEWS';
@@ -19,10 +20,11 @@ const createReview = (review) => {
     }
 }
 
-const deleteReview = (review) => {
+
+const deleteReview = (reviewId) => {
     return {
         type: DELETE,
-        review
+        reviewId
     }
 }
 
@@ -36,7 +38,7 @@ export const fetchReviews = (spotId) => async (dispatch) => {
     }
 }
 
-export const fetchCreateReview = (spotId, review) => async (dispatch) => {
+export const fetchCreateReview = (spotId, review, user) => async (dispatch) => {
     const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: "POST",
         body: JSON.stringify(review),
@@ -45,18 +47,25 @@ export const fetchCreateReview = (spotId, review) => async (dispatch) => {
 
     if (res.ok) {
         const newReview = await res.json()
-        dispatch(createReview(newReview))
-        return newReview
+        newReview.spotId = +spotId
+        const reviewData = {
+            ...newReview,
+            User: user
+        }
+        dispatch(createReview(reviewData))
+        dispatch(fetchSpotDetails(spotId))
+        return reviewData
     }
 }
 
-export const fetchDeleteReview = (reviewId) => async (dispatch) => {
+export const fetchDeleteReview = (reviewId, spotId) => async (dispatch) => {
     const res = await csrfFetch(`/api/reviews/${reviewId}`, {
         method: "DELETE"
     })
     if (res.ok) {
         let review = await res.json()
-        dispatch(deleteReview(review))
+        dispatch(deleteReview(reviewId))
+        dispatch(fetchSpotDetails(spotId))
         return review
     }
 }
@@ -70,16 +79,15 @@ const reviewsReducer = (state = initialState, action) => {
             return reviewsState
         }
         case CREATE_REVIEW: {
-            const newReview = action.review;
-            return {
+            const newState = {
                 ...state,
-                [newReview.id]: newReview
+                [action.review.id]: action.review
             }
+            return newState
         }
         case DELETE: {
-            const { review } = action;
             const newState = { ...state };
-            delete newState[review.id];
+            delete newState[action.reviewId]
             return newState;
         }
         default:

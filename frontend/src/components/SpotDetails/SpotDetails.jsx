@@ -9,30 +9,29 @@ import OpenModalButton from '../OpenModalButton'
 import DeleteReview from "../DeleteReview";
 
 const SpotDetails = () => {
-    const { spotId } = useParams();
+    let { spotId } = useParams();
+    spotId = +spotId
     const dispatch = useDispatch()
     const spot = useSelector((state) => state.spots[spotId])
     const [isLoaded, setIsLoaded] = useState(false)
-    const reviews = useSelector((state) => state.reviews)
-    const reviewList = Object.values(reviews)
-    const review = []
-    reviewList.forEach((currReview) => {
-        if (currReview.spotId === +spotId) {
-            review.push(currReview)
-        }
-    })
+    const reviewList = useSelector((state) => state.reviews)
+    const reviews = Object.values(reviewList).filter(review => review.spotId === +spotId)
+
     const months = ["Jan", "Feb", 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     const session = useSelector((state) => state.session.user)
-    const userHasReview = reviewList.find(currReview => currReview.userId === session?.id)
+    const userHasReview = reviews.find(currReview => currReview.userId === session?.id)
+
     useEffect(() => {
-        dispatch(fetchSpotDetails(spotId))
-            .then(dispatch(fetchReviews(spotId)))
+        dispatch(fetchSpotDetails(+spotId))
+            .then(dispatch(fetchReviews(+spotId)))
             .then(() => setIsLoaded(true))
-    }, [dispatch, spotId, isLoaded])
+    }, [dispatch, spotId])
+
 
     const handleClick = () => {
         alert("Feature Coming Soon...")
     }
+
 
     return (
         <>
@@ -52,7 +51,7 @@ const SpotDetails = () => {
                     <div className="reserve-box">
                         <span> ${spot.price} per night</span>
                         <span> ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}</span>
-                        <span> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
+                        <span hidden={!spot.numReviews}> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
                         <button onClick={handleClick}>Reserve</button>
                     </div>
                     <div className="reviews">
@@ -62,32 +61,33 @@ const SpotDetails = () => {
                             >
                                 <OpenModalButton
                                     buttonText='Post Your Review'
-                                    modalComponent={<PostReviewModal spotId={spotId} />}
+                                    modalComponent={<PostReviewModal spotId={spotId}/>}
                                 />
                             </span>
                         </div>
-                        <span hidden={review.length !== 0 || (session.user && spot.Owner.id === session.id)}>
+                        <span hidden={reviews.length !== 0 || (session?.user && spot.Owner.id === session.id)}>
                             Be the first to post a review!
                         </span>
                         <div className="review-data">
                             <span> ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}</span>
-                            <span> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
-                            {review && review.map((review) => (
+                            <span hidden={!spot.numReviews}> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
+                            {reviews && reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((review) => (
                                 <div key={review.id}>
-                                    <p>{review.firstName}</p>
+                                    <p>{review.User.firstName}</p>
                                     <p>{months[new Date(review.createdAt).getMonth()]} {review.createdAt.split('-')[0]}</p>
                                     <p>{review.review}</p>
                                     <span hidden={review.userId !== session?.id}>
                                         <OpenModalButton
                                             buttonText='Delete'
-                                            modalComponent={<DeleteReview reviewId={review.id} />}
+                                            modalComponent={<DeleteReview reviewId={review.id} spotId={spotId} />}
                                         />
                                     </span>
                                 </div>
                             ))}
                         </div>
                     </div>
-                </main>}
+                </main>
+                }
         </>
 
     )
