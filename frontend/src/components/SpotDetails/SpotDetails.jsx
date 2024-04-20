@@ -51,7 +51,7 @@ const SpotDetails = () => {
                     <div className="reserve-box">
                         <span> ${spot.price} per night</span>
                         <span> ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}</span>
-                        <span> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
+                        <span hidden={!spot.numReviews}> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
                         <button onClick={handleClick}>Reserve</button>
                     </div>
                     <div className="reviews">
@@ -65,12 +65,12 @@ const SpotDetails = () => {
                                 />
                             </span>
                         </div>
-                        <span hidden={reviews.length !== 0 || (session.user && spot.Owner.id === session.id)}>
+                        <span hidden={reviews.length !== 0 || (session?.user && spot.Owner.id === session.id)}>
                             Be the first to post a review!
                         </span>
                         <div className="review-data">
                             <span> ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}</span>
-                            <span> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
+                            <span hidden={!spot.numReviews}> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
                             {reviews && reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((review) => (
                                 <div key={review.id}>
                                     <p>{review.User.firstName}</p>

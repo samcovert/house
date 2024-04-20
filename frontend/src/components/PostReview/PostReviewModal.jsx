@@ -42,6 +42,7 @@ const PostReviewModal = ({ spotId }) => {
         <div>
             <form className="post-review" onSubmit={handleSubmit}>
                 <h3>How was your Stay?</h3>
+
                 <textarea className="review-text" value={newReview}
                     onChange={e => setNewReview(e.target.value)}
                     rows="7" cols="30" placeholder="Leave your review here...">
