@@ -54,7 +54,9 @@ function SignupFormModal() {
 
   return (
     <main className='signup-form'>
+      <div className='signup-text'>
       <h1>Sign Up</h1>
+      </div>
       <form onSubmit={handleSubmit}>
         <label>
           Email
@@ -118,7 +120,7 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p className='error-message'>{errors.confirmPassword}</p>
         )}
-        <button type="submit" disabled={!isFormValid()}>Sign Up</button>
+        <button className='button' type="submit" disabled={!isFormValid()}>Sign Up</button>
       </form>
     </main>
   );

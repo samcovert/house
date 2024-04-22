@@ -30,8 +30,9 @@ nav {
 
 .right-nav {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
     width: 175px;
+    /* gap: 100px; */
 }
 .logo {
     height: 50px;
@@ -50,6 +51,8 @@ nav {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px;
     list-style: none;
+    margin-right: 7px;
+    margin-top: 18px;
 }
 
 .profile-dropdown li {
@@ -72,4 +75,5 @@ nav {
 
 .profile-button {
     cursor: pointer;
+
 }
