@@ -1,3 +1,29 @@
 .error-messages {
     color: red;
+    display: flex;
+    justify-content: center;
   }
+
+.login-text {
+  display: flex;
+  justify-content: center;
+}
+
+.password-input {
+  margin-bottom: 10px;
+}
+
+.demo-user-button {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  width: 140px;
+  justify-self: center;
+}
+
+.login-button {
+  background-color: rgb(79, 79, 79);
+  color: white;
+  cursor: pointer;
+  margin-bottom: 10px;
+}

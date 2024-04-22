@@ -1,9 +1,21 @@
 .delete-button {
     background-color: red;
     color: white;
+    cursor: pointer;
 }
 
 .cancel-button {
-    background-color: darkgray;
+    background-color: rgb(100, 100, 100);
     color: white;
+    cursor: pointer;
+}
+
+.buttons {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.delete-spot-form {
+    border: 5px solid black;
+    border-radius: 1px;
 }

@@ -120,8 +120,8 @@ const CreateNewSpot = () => {
                 <label className="lat">
                     Latitude
                     <input
-                        type="text"
-                        value={lat}
+                        type="number"
+                        value={lat || ''}
                         onChange={(e) => setLat(e.target.value)}
                         placeholder="Latitude"
                     />
@@ -129,22 +129,24 @@ const CreateNewSpot = () => {
                 <label className="lng">
                     Longitude
                     <input
-                        type="text"
-                        value={lng}
+                        type="number"
+                        value={lng || ''}
                         onChange={(e) => setLng(e.target.value)}
                         placeholder="Longitude"
                     />
                 </label>
+                <div className="line"></div>
                 <h2 className="description">Describe your place to guests</h2>
                 <p>Mention the best features of your space, any special amentities like
                     fast wifi or parking, and what you love about the neighborhood</p>
-                <input
+                <input className="description-box"
                     type="text"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Please write at least 30 characters"
                 />
                 {errors.description && <p className="errors">{errors.description}</p>}
+                <div className="line"></div>
                 <h2 className="title">Create a title for your spot</h2>
                 <p>Catch guests attention with a spot title that highlights what makes your place special.</p>
                 <input
@@ -154,17 +156,21 @@ const CreateNewSpot = () => {
                     placeholder="Name of your spot"
                 />
                 {errors.name && <p className="errors">{errors.name}</p>}
+                <div className="line"></div>
                 <h2 className="price">Set a base price for your spot</h2>
                 <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                 <label>
-                    $
-                    <input
-                        type="text"
-                        value={price}
+                    <div className="price-input">
+                    <div className="dollar-sign">$</div>
+                    <input className="price-input-box"
+                        type="number"
+                        value={price || ''}
                         onChange={(e) => setPrice(e.target.value)}
                         placeholder="Price per night (USD)"
                     />
+                    </div>
                     {errors.price && <p className="errors">{errors.price}</p>}
+                    <div className="line"></div>
                 </label>
                 <h2 className="photos">Liven up your spot with photos</h2>
                 <p>Submit a link to at least one photo to publish your spot.</p>
@@ -203,9 +209,12 @@ const CreateNewSpot = () => {
                     placeholder="Image URL"
                 />
                 {errors.img5 && <p className="errors">{errors.img5}</p>}
+                <div className="line"></div>
+                <div className="create-spot-button-div">
                 <button className="create-spot-button"
                 type="submit"
                 >Create Spot</button>
+                </div>
             </form>
         </main>
     )

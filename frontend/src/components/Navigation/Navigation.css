@@ -12,10 +12,28 @@ nav {
     border-bottom: 1px solid black;
 }
 
-.create-spot {
-    justify-self: flex-end;
+.house-text {
+    font-size:xx-large;
+    color: black;
 }
 
+.create-spot {
+    align-self: center;
+}
+
+.create-spot button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    color: rgb(44, 44, 105);
+}
+
+.right-nav {
+    display: flex;
+    justify-content: flex-end;
+    width: 175px;
+    /* gap: 100px; */
+}
 .logo {
     height: 50px;
     width: 50px;
@@ -33,6 +51,8 @@ nav {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px;
     list-style: none;
+    margin-right: 7px;
+    margin-top: 18px;
 }
 
 .profile-dropdown li {
@@ -55,4 +75,5 @@ nav {
 
 .profile-button {
     cursor: pointer;
+
 }

@@ -1,3 +1,7 @@
-button {
-    background-color: gray;
+.modal-button {
+    background-color: grey;
+    color: white;
+    cursor: pointer;
+    /* border: 1px solid black; */
+    border-radius: 2px;
 }

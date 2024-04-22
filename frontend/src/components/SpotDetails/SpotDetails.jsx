@@ -49,9 +49,9 @@ const SpotDetails = () => {
                     <div className="spot-host">Hosted By {spot.Owner.firstName} {spot.Owner.lastName}</div>
                     <div className="spot-descrition">{spot.description}</div>
                     <div className="reserve-box">
-                        <span> ${spot.price} per night</span>
-                        <span> ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}</span>
-                        <span hidden={!spot.numReviews}> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
+                        <span className="price"> ${spot.price} per night</span>
+                        <span className="rating"> ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}</span>
+                        <span className="numReviews" hidden={!spot.numReviews}> · {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}</span>
                         <button onClick={handleClick}>Reserve</button>
                     </div>
                     <div className="reviews">
@@ -76,7 +76,7 @@ const SpotDetails = () => {
                                     <p>{review.User.firstName}</p>
                                     <p>{months[new Date(review.createdAt).getMonth()]} {review.createdAt.split('-')[0]}</p>
                                     <p>{review.review}</p>
-                                    <span hidden={review.userId !== session?.id}>
+                                    <span className="delete-review" hidden={review.userId !== session?.id}>
                                         <OpenModalButton
                                             buttonText='Delete'
                                             modalComponent={<DeleteReview reviewId={review.id} spotId={spotId} />}
