@@ -64,7 +64,7 @@
     font-weight: bold;
     /* width: 500px; */
     grid-column-start: 1;
-    grid-column-end: 4;
+    grid-column-end: 5;
 }
 
 .reserve-box button:hover {

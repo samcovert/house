@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchAddImg, fetchNewSpot } from "../../store/spots"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import './CreateNewSpot.css'
 
 
@@ -24,14 +24,11 @@ const CreateNewSpot = () => {
     const [lng, setLng] = useState(0)
     const [errors, setErrors] = useState({})
     const user = useSelector(state => state.session.user)
-    let { spotId } = useParams()
-    spotId = +spotId
 
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         let validationErrors = {}
-
 
         if (country.length === 0) validationErrors.country = 'Country is required'
         if (address.length === 0) validationErrors.address = 'Address is required'
@@ -60,9 +57,16 @@ const CreateNewSpot = () => {
                 price: price,
                 lat: lat,
                 lng: lng,
+                previewImage: img
             }
             const newSpot = await dispatch(fetchNewSpot(payload))
-            dispatch(fetchAddImg(spotId, img))
+            const newSpotId = newSpot.id
+            const newSpotPreviewImage = {
+                url: img,
+                preview: true,
+                spotId: newSpotId
+              };
+            await dispatch(fetchAddImg(+newSpotId, newSpotPreviewImage))
             if (newSpot) {
                 navigate(`/spots/${newSpot.id}`)
             }

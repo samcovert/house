@@ -169,12 +169,18 @@ const spotsReducer = (state = initialState, action) => {
         }
         case ADD_IMG: {
             return {
-                ...state,
-                [action.spotId]: {
-                    ...state.spots[action.spotId],
-                    SpotImages: [action.img]
+            ...state,
+            [action.img.spotId]: {
+              ...state[action.img.spotId],
+              SpotImages: [
+                {
+                  url: action.img.url,
+                  preview: action.img.preview,
+                  spotId: action.img.spotId,
                 }
+              ]
             }
+          };
         }
         case DELETE_SPOT: {
             const newState = { ...state };
