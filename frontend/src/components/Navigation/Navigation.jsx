@@ -8,9 +8,12 @@ function Navigation({ isLoaded }) {
 
   return (
     <nav>
-      <div>
-        <NavLink to="/"><img className='logo' src='https://samsclub13.s3.us-west-2.amazonaws.com/logo.png'></img></NavLink>
+      <div className='left-nav'>
+        <NavLink to="/"><img className='logo' src='https://samsclub13.s3.us-west-2.amazonaws.com/logo.png'></img><span className='house-text'>House</span></NavLink>
+
+
       </div>
+      <div className='right-nav'>
       <div hidden={!sessionUser} className='create-spot'>
         <NavLink to='/spots/new'>
           <button>Create New Spot</button>
@@ -19,6 +22,7 @@ function Navigation({ isLoaded }) {
       {isLoaded && (
         <ProfileButton user={sessionUser} />
       )}
+      </div>
     </nav>
   );
 }

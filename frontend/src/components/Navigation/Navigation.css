@@ -12,10 +12,27 @@ nav {
     border-bottom: 1px solid black;
 }
 
-.create-spot {
-    justify-self: flex-end;
+.house-text {
+    font-size:xx-large;
+    color: black;
 }
 
+.create-spot {
+    align-self: center;
+}
+
+.create-spot button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    color: rgb(44, 44, 105);
+}
+
+.right-nav {
+    display: flex;
+    justify-content: space-around;
+    width: 175px;
+}
 .logo {
     height: 50px;
     width: 50px;

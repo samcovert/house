@@ -39,7 +39,7 @@ const PostReviewModal = ({ spotId }) => {
     }
 
     return (
-        <div>
+        <>
             <form className="post-review" onSubmit={handleSubmit}>
                 <h3>How was your Stay?</h3>
 
@@ -62,7 +62,7 @@ const PostReviewModal = ({ spotId }) => {
                 </div>
                 <button className="review-button" disabled={disabled}>Submit Your Review</button>
             </form>
-        </div>
+        </>
     )
 }
 

@@ -18,17 +18,16 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: stretch;
     padding: 20px;
   }
 
   .landing a {
     text-decoration: none;
+    color: inherit;
     width: calc(25% - 40px);
     margin: 10px;
-    border: 1px solid #c8c7c7;
-    border-radius: 8px;
   }
 
   .landing img {
@@ -39,8 +38,8 @@
 
   .spot-details {
     padding: 8px 12px;
+    padding-bottom: 0;
     background-color: white;
-    border-bottom: 1px solid rgb(182, 181, 181);
     display: flex;
     justify-content: space-between;
   }
@@ -52,8 +51,9 @@
     color: black
   }
 
-  .price {
+  .landing-page-price {
     margin-top: auto;
+    margin-left: 10px;
     font-weight: bold;
     color: black;
   }

@@ -7,6 +7,8 @@
 }
 
 .header {
+    display: flex;
+    justify-content: flex-start;
     margin-bottom: 20px;
 }
 
@@ -17,11 +19,15 @@
     row-gap: 25px;
 }
 
+a {
+    text-decoration: none;
+}
+
 
 .card {
-    border: 1px solid #d4d4d4;
     border-radius: 8px;
     overflow: hidden;
+    text-decoration: none;
 }
 
 .card img {
@@ -33,8 +39,7 @@
 
 .card .spot-details {
     padding: 15px;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #ccc;
+    padding-bottom: 0px;
 }
 
 .card .spot-details .city, .card .spot-details .rating {
@@ -44,12 +49,13 @@
 
 .card .price {
     padding: 15px;
-    background-color: #fff;
+    padding-top: 0;
     font-size: 18px;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: black;
 }
 
 .card button {
@@ -72,4 +78,11 @@
 
 .card button:hover {
     opacity: 0.8;
+}
+
+.manage-spots-create-spot-button {
+    background-color: gray;
+    color: white;
+    cursor: pointer;
+    height: 30px;
 }

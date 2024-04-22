@@ -29,7 +29,7 @@ const DeleteSpot = ({ spotId }) => {
                     {errors.message && (
                         <div>{errors}</div>
                     )}
-                    <div>
+                    <div className="buttons">
                         <button onClick={handleClick} className="delete-button">Yes (Delete Spot)</button>
                         <button onClick={closeModal} className="cancel-button">No (Keep Spot)</button>
                     </div>

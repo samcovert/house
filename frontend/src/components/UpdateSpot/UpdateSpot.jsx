@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchSpotDetails, fetchUpdateSpot } from "../../store/spots"
 import { useNavigate, useParams } from "react-router-dom"
+import './UpdateSpot.css'
 
 const UpdateSpot = () => {
     const { spotId } = useParams()
@@ -42,7 +43,7 @@ const UpdateSpot = () => {
         if (name.length === 0) validationErrors.name = 'Name is required'
         if (!price) validationErrors.price = 'Price is required'
         if (address.length === 0) validationErrors.address = 'Address is required'
-        if (img.length === 0) validationErrors.img = 'Preview image is required'
+        // if (img.length === 0) validationErrors.img = 'Preview image is required'
         // if (!img.endsWith('.png') || !img.endsWith('.jpg') || !img.endsWith('.jpeg')) validationErrors.img = 'Image URL must end in .png, .jpg, or .jpeg'
         // if (!img2.endsWith('.png') || !img2.endsWith('.jpg') || !img2.endsWith('.jpeg')) validationErrors.img2 = 'Image URL must end in .png, .jpg, or .jpeg'
         // if (!img3.endsWith('.png') || !img3.endsWith('.jpg') || !img3.endsWith('.jpeg')) validationErrors.img3 = 'Image URL must end in .png, .jpg, or .jpeg'
@@ -72,10 +73,12 @@ const UpdateSpot = () => {
         <>
             {
                 isLoaded &&
-                <>
+                <main className="update-spot-form">
+                <div className="heading">
                     <h1>Update your Spot</h1>
                     <h2>Where&apos;s your place located?</h2>
                     <p>Guests will only get your exact address once they booked a reservation.</p>
+                    </div>
                     <form onSubmit={handleSubmit}>
                         <label>
                             Country
@@ -97,7 +100,7 @@ const UpdateSpot = () => {
                             />
                             {errors.address && <p className="errors">{errors.address}</p>}
                         </label>
-                        <label>
+                        <label className="city">
                             City
                             <input
                                 type="text"
@@ -107,7 +110,7 @@ const UpdateSpot = () => {
                             />
                             {errors.city && <p className="errors">{errors.city}</p>}
                         </label>
-                        <label>
+                        <label className="state">
                             State
                             <input
                                 type="text"
@@ -117,7 +120,7 @@ const UpdateSpot = () => {
                             />
                             {errors.state && <p className="errors">{errors.state}</p>}
                         </label>
-                        <label>
+                        <label className="lat">
                             Latitude
                             <input
                                 type="text"
@@ -126,7 +129,7 @@ const UpdateSpot = () => {
                                 placeholder="Latitude"
                             />
                         </label>
-                        <label>
+                        <label className="lng">
                             Longitude
                             <input
                                 type="text"
@@ -135,16 +138,18 @@ const UpdateSpot = () => {
                                 placeholder="Longitude"
                             />
                         </label>
+                        <div className="line"></div>
                         <h2>Describe your place to guests</h2>
                         <p>Mention the best features of your space, any special amentities like
                             fast wifi or parking, and what you love about the neighborhood</p>
-                        <input
+                        <input className="description-box"
                             type="text"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder="Please write at least 30 characters"
                         />
                         {errors.description && <p className="errors">{errors.description}</p>}
+                        <div className="line"></div>
                         <h2>Create a title for your spot</h2>
                         <p>Catch guests attention with a spot title that highlights what makes your place special.</p>
                         <input
@@ -154,18 +159,24 @@ const UpdateSpot = () => {
                             placeholder="Name of your spot"
                         />
                         {errors.name && <p className="errors">{errors.name}</p>}
+                        <div className="line"></div>
                         <h2>Set a base price for your spot</h2>
                         <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                         <label>
+                        <div className="price-input">
+                            <div className="dollar-sign">
                             $
-                            <input
+                            </div>
+                            <input className="price-input-box"
                                 type="text"
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
                                 placeholder="Price per night (USD)"
                             />
+                            </div>
                             {errors.price && <p className="errors">{errors.price}</p>}
                         </label>
+                        <div className="line"></div>
                         <h2>Liven up your spot with photos</h2>
                         <p>Submit a link to at least one photo to publish your spot.</p>
                         <input
@@ -189,11 +200,14 @@ const UpdateSpot = () => {
                             placeholder="Image URL"
                         />
                         {errors.img3 && <p className="errors">{errors.img3}</p>}
-                        <button
+                        <div className="line"></div>
+                        <div className="create-spot-button-div">
+                        <button className="create-spot-button"
                             type="submit"
                         >Update Spot</button>
+                        </div>
                     </form>
-                </>
+                </main>
             }
         </>
     )

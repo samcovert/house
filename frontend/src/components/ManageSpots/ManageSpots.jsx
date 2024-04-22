@@ -23,15 +23,20 @@ const ManageSpots = () => {
 
     if (spots.length === 0) {
         return (
+            <>
+            <h1>Manage Spots</h1>
             <NavLink to={`/spots/new`}>
-                <button>Create a new Spot</button>
+                <button className='manage-spots-create-spot-button'>Create a new Spot</button>
             </NavLink>
+            </>
         )
     }
     return (
         <>
         <main className="manage-spots">
-            <h1 className="header">Manage Spots</h1>
+            <div className="header">
+            <h1>Manage Spots</h1>
+            </div>
             <div className="spot-cards">
             {spots.map(spot => (
                 <div key={spot.id}className="card">
@@ -44,11 +49,11 @@ const ManageSpots = () => {
                             {spot.city}, {spot.state}
                         </span>
                         <span className="rating">
-                            ⭐️{spot.avgRating}
+                        ⭐️{spot.avgStarRating ? parseInt(spot.avgStarRating).toFixed(1) : "New"}
                         </span>
                     </div>
                     <div className="price">
-                        ${spot.price}
+                        ${spot.price} night
                     </div>
                 </NavLink>
                 <NavLink to={`/spots/${spot.id}/edit`}>

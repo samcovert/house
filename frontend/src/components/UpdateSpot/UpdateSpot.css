@@ -1,0 +1,97 @@
+.errors {
+    color: red
+}
+
+.update-spot-form {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 300px;
+    margin-left: 300px;
+    padding: 20px;
+}
+
+.price{
+    margin-left: 0;
+}
+
+.heading {
+    align-self: flex-start;
+    margin-left: 20px
+}
+
+.city, .state, .lat, .lng {
+    display: inline-block;
+    width: 313px;
+}
+
+.line {
+    margin-right: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 0;
+    border-bottom: 3px solid black;
+    width: 100%;
+}
+
+form {
+    background: white;
+    padding: 20px;
+    padding-top: 0;
+    /* margin: 20px; */
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+}
+
+input {
+    width: 100%;
+    height: 30px;
+    padding-right: 0px;
+    margin-top: 10px;
+    border: 1px solid black;
+}
+
+.create-spot-button-div {
+    display: flex;
+    justify-content: center;
+}
+
+.create-spot-button {
+    display: block;
+    width: auto;
+    padding: 10px;
+    background-color: rgb(255, 0, 0);
+    color: white;
+    cursor: pointer;
+}
+
+.create-spot-button:hover {
+    background-color: rgb(255, 146, 146);
+}
+
+.errors {
+    color: red;
+    margin: 5px 0;
+}
+
+.price-input {
+    display: flex;
+    justify-content: space-around;
+}
+
+.price-input-box {
+    margin-top: 0px;
+}
+
+.dollar-sign {
+    margin: 10px 9px;
+}
+
+.description-box {
+    padding-bottom: 100px;
+}
